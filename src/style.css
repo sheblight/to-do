@@ -43,3 +43,27 @@ nav {
 .tag-group {
     display: flex;
 }
+
+.todo-modal-wrapper {
+    position:fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.todo-modal {
+    position: inherit;
+    --modal-width: 300px;
+    --modal-height: 300px;
+    width: var(--modal-width);
+    height: var(--modal-height);
+    bottom: calc(50% - var(--modal-height)/2);
+    right: calc(50% - var(--modal-width)/2);
+    background-color: var(--accent-color);
+}
+
+.todo-modal svg {
+    width: 2rem;
+    height: 2rem;
+}
+
