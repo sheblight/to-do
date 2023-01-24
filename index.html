@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <button>Add todo</button>
+        <div class="side-menu-tag">
+    </header>
+    <nav class="side-menu">
+        <button class="home">Home</button>
+        <button class="task-add">Add New Tag</button>
+        <!-- tags are dynamically added here -->
+    </nav>
+    <main>
+        <h1>All todos</h1>
+        <div class="content">
+            <div class="head"></div>
+            <div class="divider"></div>
+            <div class="todo-entry">
+                <button></button>
+                <p class="todo-entry-title">TODO Title</p>
+                <p>01/01/2023</p>
+                <div class="tag-group">
+                    <div class="tag">poggins</div>
+                    <div class="tag">poggins2</div>
+                </div>
+                <p>High</p>
+            </div>
+        </div>
+    </main>
+    <div class="init-modal hidden"></div>
+    <div class="todo-modal hidden">
+        <button>Done?</button>
+        <h1>TODO Title</h1>
+        <p>Description here.</p>
+        <p>Deadline: 01/01/2023</p>
+        <p>Priority: High</p>
+    </div>
+    <script src="index.bundle.js"></script>
+</body>
+</html>
