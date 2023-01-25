@@ -11,12 +11,26 @@
         <div class="side-menu-tag">
     </header>
     <nav class="side-menu">
-        <button class="home">Home</button>
-        <button class="task-add">Add New Tag</button>
+        <div></div>
+        <button class="home">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
+            <p>Home</p>
+        </button>
+        <button class="add">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+            <p>Add Tag</p>
+        </button>
         <div class="tag-list">
+            <button class="tag">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                <p>Randomtag</p>
+            </button>
             <!-- tags are dynamically added here -->
         </div>
-        <button class="data-clear">Reset data</button>
+        <button class="data-clear">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z" /></svg>
+            <p>Reset data</p>
+        </button>
     </nav>
     <main>
         <h1>All todos</h1>
@@ -25,19 +39,32 @@
             <div class="divider"></div>
             <div class="todo-list">
                 <div class="todo-entry">
-                    <button></button>
-                    <p class="todo-entry-title">TODO Title</p>
-                    <p>01/01/2023</p>
-                    <div class="tag-group">
-                        <div class="tag">poggins</div>
-                        <div class="tag">poggins2</div>
+                    <button class="todo-check">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <title>radiobox-blank</title>
+                            <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                        <svg class="hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <title>Check/uncheck task</title>
+                            <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z" />
+                        </svg>
+                    </button>
+                    <p class="todo-entry-title" data-property="title">TODO Title</p>
+                    <p data-property="deadline">01/01/2023</p>
+                    <div class="tag-group" data-property="tags">
+                        <div class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                            poggins</div>
+                        <div class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                            poggins2</div>
                     </div>
-                    <p>High</p>
+                    <p data-property="priority">High</p>
                 </div>
             </div>
-            <button class="todo-add">Add todo</button>
-            
         </div>
+        <button class="add">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+            <p>Add Task</p>
+        </button>
     </main>
     <div class="init-modal hidden"></div>
     <div class="todo-modal-wrapper hidden">
@@ -52,23 +79,17 @@
                     <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z" />
                 </svg>
             </button>
-            <button class="todo-edit hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <title>Edit task</title>
-                    <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-                </svg>
-            </button>
-            <button class="todo-close">
+            <button class="close">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>Back</title>
                     <path d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
                 </svg>
             </button>
-
-            <h1 contenteditable="true">TODO Title</h1>
-            <p contenteditable="true">Description here.</p>
-            <p>Deadline: 01/01/2023</p>
-            <p>Priority: High</p>
+            <!-- Content editable-->
+            <h1 contenteditable="true" data-property="title">TODO Title</h1>
+            <p contenteditable="true" data-property="description">Description here.</p>
+            <p data-property="deadline">Deadline: 01/01/2023</p>
+            <p data-property="priority">Priority: High</p>
             <button class="todo-remove">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>Remove Task</title>
