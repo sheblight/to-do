@@ -1,7 +1,10 @@
 import style from "./style.css";
 import domManager from "./domManager.js";
+import localDataManager from "./localDataManager.js"
 
 
+// load save data
+localDataManager.load();
 
 // testing todo modal interactivity
 const todoModal = document.querySelector(".todo-modal-wrapper");
@@ -13,5 +16,5 @@ domManager.setClick("button.todo-add", ()=>{
 });
 
 // TODO
-// - make todo data persistent
+// - add module for managing user data - parsing, updating, and saving local JSON
 // - add reset button for debugging data clearing
