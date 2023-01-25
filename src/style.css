@@ -14,7 +14,7 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: 5rem 1fr;
-    grid-template-rows: 3rem calc(100vh-3rem);
+    grid-template-rows: 3rem calc(100vh - 3rem);
 }
 
 header {
@@ -26,8 +26,9 @@ nav {
     background-color: var(--sub-color);
 }
 
-.content {
+main {
     padding: 2rem 4rem;
+    overflow: auto;
 }
 
 .divider {

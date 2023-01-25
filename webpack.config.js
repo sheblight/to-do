@@ -4,6 +4,7 @@ module.exports = {
     mode: 'production',
     entry: {
         index:'./src/index.js',
+        domManager: './src/domManager.js',
     },
     devtool: 'inline-source-map',
     devServer: {
