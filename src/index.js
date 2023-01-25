@@ -14,7 +14,12 @@ domManager.setClick("button.todo-add", ()=>{
     domManager.addEntryOfTemplate(".todo-list div:first-child", ".todo-list");
     todoModal.classList.remove("hidden");
 });
+domManager.setClick("button.data-clear", ()=>{localDataManager.reset()});
 
-// TODO
-// - add module for managing user data - parsing, updating, and saving local JSON
-// - add reset button for debugging data clearing
+/*
+
+TODO
+- add reset button for debugging data clearing
+
+
+*/

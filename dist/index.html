@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>To-Do</title>
 </head>
 <body>
     <header>
@@ -13,7 +13,10 @@
     <nav class="side-menu">
         <button class="home">Home</button>
         <button class="task-add">Add New Tag</button>
-        <!-- tags are dynamically added here -->
+        <div class="tag-list">
+            <!-- tags are dynamically added here -->
+        </div>
+        <button class="data-clear">Reset data</button>
     </nav>
     <main>
         <h1>All todos</h1>
@@ -33,6 +36,7 @@
                 </div>
             </div>
             <button class="todo-add">Add todo</button>
+            
         </div>
     </main>
     <div class="init-modal hidden"></div>

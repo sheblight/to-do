@@ -12,6 +12,7 @@ const localDataManager = (()=>{
     };
     let data = {};
 
+    function getInitData() { return JSON.parse(JSON.stringify(initData));}
     function getTasks() { return data.tasks; }
     function getTags() { return data.tags; }
 
@@ -46,9 +47,10 @@ const localDataManager = (()=>{
     const updateDataFormatByVersion = (storedVersion) => {
     }
 
-    // Deletes all data
+    // Reset data session and locally
     const reset = () => {
-        window["localStorage"].clear();
+        data = getInitData();
+        saveData(data);
         console.log("Cleared data.")
     };
 
@@ -66,7 +68,7 @@ const localDataManager = (()=>{
             return JSON.parse(localData);
         }
         console.log("Retrieving first time data.")
-        return initData;
+        return getInitData();
     }
 
     // Save given data object into local storage
@@ -86,19 +88,18 @@ const localDataManager = (()=>{
             return;
         }
 
-        // Retrieve data
         data = retrieveData();
+        
         // Sync version
         if (data.version != initData.version) {
             updateDataFormatByVersion(storedVersion);
             console.log(`Updating data from ${storedVersion}.`)
         }
-
-        // Save data to ensure local session is updated
         saveData(data);
+        console.log(data);
     };
 
-    return {load, add, getTags, getTasks};
+    return {load, add, reset, getTags, getTasks};
 
 })();
 
