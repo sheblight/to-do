@@ -81,6 +81,7 @@ const localDataManager = (()=>{
         console.log("Saved data.");
     }
 
+    // controller functions
     // Load data from local storage
     const load = () => {
         if (!window["localStorage"]) {
