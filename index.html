@@ -20,35 +20,42 @@
             </li>
             <!-- Add more timely options in here in the future-->
         </ul>
-        <div class="divider" style="grid-area: 3/1/3/1; border-width: 0.5px; margin: 0 2rem; height: 0; position: relative; top: 50%;"></div>
-        <div class="menu-tag-options" style="grid-area:4/1/4/1;">
-            <button class="add icon" style="padding: 1rem 0;">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
-                <p>Add Tag</p>
-            </button>
-            <ul class="tag-list">
-                <li>
-                    <div class="tag icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                        <p>Randomtag</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="tag icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                        <p>Randomtag</p>
-                    </div>
-                </li>
-                <!-- tags are dynamically added here -->
-            </ul>
-        </div>
-        <button class="data-clear icon" style="grid-area:5/1/5/1;">
+        <!--div class="divider" style="grid-area: 3/1/3/1; border-width: 0.5px; margin: auto 2rem; height: 0;"></div-->
+        <button class="tag-add add icon" style="grid-area: 4/1/4/1;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+            <p>Add Tag</p>
+        </button>
+        <ul class="tag-list" style="grid-area:5/1/5/1; overflow:auto;">
+            <li>
+                <div class="tag icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                    <p>Randomtag</p>
+                </div>
+            </li>
+            <li>
+                <div class="tag icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                    <p>Randomtag</p>
+                </div>
+            </li>
+            <!-- tags are dynamically added here -->
+        </ul>
+        <button class="data-clear icon" style="grid-area:6/1/6/1;">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>eraser</title><path d="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z" /></svg>
             <p>Reset data</p>
         </button>
     </nav>
     <main>
-        <h1 style="margin: 2rem; font-size: 2rem;">Home</h1>
+        <div class="content-head" style="display:flex; justify-content:space-between; margin: 2rem; ">
+            <h1 style="font-size: 2rem;">Home</h1>
+            <button class="icon hidden" style="background-color: rgb(182, 50, 50); border-radius: 5px; width: 9rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <title>Remove Tag</title>
+                    <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z" />
+                </svg>
+                <p>Remove Tag</p>
+            </button>
+        </div>
         <div class="content">
             <div class="head"></div>
             <div class="divider"></div>
