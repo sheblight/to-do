@@ -19,6 +19,7 @@ domManager.setClick("button.data-clear", ()=>{localDataManager.reset()});
 /*
 
 TODO
-- stylize the site to vertical slice
-- add filter to 
+- add mock tag filtering function
+- stylize sidebar, home content, and todo modal to vertical slice
+- screenshot all pages and clean up html/css
 */

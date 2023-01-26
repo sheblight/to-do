@@ -8,37 +8,52 @@
 </head>
 <body>
     <header>
-        <div class="side-menu-tag">
+        <div class="menu-tag">
     </header>
-    <nav class="side-menu">
-        <div></div>
-        <button class="home">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
-            <p>Home</p>
-        </button>
-        <button class="add">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
-            <p>Add Tag</p>
-        </button>
-        <div class="tag-list">
-            <button class="tag">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                <p>Randomtag</p>
+    <nav class="menu">
+        <ul class="menu-time-options" style="grid-area:2/1/2/1;">
+            <li>
+                <div class="home icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>home</title><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
+                    <p>Home</p>
+                </div>
+            </li>
+            <!-- Add more timely options in here in the future-->
+        </ul>
+        <div class="divider" style="grid-area: 3/1/3/1; border-width: 0.5px; margin: 0 2rem; height: 0; position: relative; top: 50%;"></div>
+        <div class="menu-tag-options" style="grid-area:4/1/4/1;">
+            <button class="add icon" style="padding: 1rem 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                <p>Add Tag</p>
             </button>
-            <!-- tags are dynamically added here -->
+            <ul class="tag-list">
+                <li>
+                    <div class="tag icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                        <p>Randomtag</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="tag icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                        <p>Randomtag</p>
+                    </div>
+                </li>
+                <!-- tags are dynamically added here -->
+            </ul>
         </div>
-        <button class="data-clear">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z" /></svg>
+        <button class="data-clear icon" style="grid-area:5/1/5/1;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>eraser</title><path d="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z" /></svg>
             <p>Reset data</p>
         </button>
     </nav>
     <main>
-        <h1>All todos</h1>
+        <h1 style="margin: 2rem; font-size: 2rem;">Home</h1>
         <div class="content">
             <div class="head"></div>
             <div class="divider"></div>
             <div class="todo-list">
-                <div class="todo-entry">
+                <div class="todo-entry" style="margin: 2rem; ">
                     <button class="todo-check">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <title>radiobox-blank</title>
@@ -49,20 +64,25 @@
                             <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z" />
                         </svg>
                     </button>
-                    <p class="todo-entry-title" data-property="title">TODO Title</p>
+                    <p class="todo-entry-title" style="margin-left: 1rem; font-size: 1.5rem; font-weight: 600;">TODO Title</p>
                     <p data-property="deadline">01/01/2023</p>
-                    <div class="tag-group" data-property="tags">
-                        <div class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                            poggins</div>
-                        <div class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                            poggins2</div>
+                    <div class="tag-group" style="margin-left: 1rem;">
+                        <div class="tag icon" style="font-weight: normal;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                            <p>poggins</p>
+                        </div>
+                        <div class="tag icon" style="font-weight: normal;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                            <p>poggins2</p>
+                        </div>
                     </div>
                     <p data-property="priority">High</p>
                 </div>
             </div>
+            <div class="divider"></div>
         </div>
-        <button class="add">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+        <button class="add icon" style="margin: 1rem 2rem; gap: 1rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width:1.5rem;height:1.5rem;"viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
             <p>Add Task</p>
         </button>
     </main>
