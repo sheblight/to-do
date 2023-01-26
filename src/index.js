@@ -1,10 +1,22 @@
 import style from "./style.css";
 import domManager from "./domManager.js";
-import localDataManager from "./localDataManager.js"
+import localDataHandler from "./localDataHandler.js"
 
+// Data that first-time users begin with
+const currentVersion = "0.1.0"
 
-// load save data
-localDataManager.load();
+let data = {
+    version: currentVersion,
+    user: "Guest",
+    tasks: [{
+        title: "Add New Task",
+        description: "Pressing \"Add Task\" at the bottom adds a new task.",
+        deadline: "",
+        priority: 3,
+    }],
+    tags: []
+};
+
 
 // testing todo modal interactivity
 const todoModal = document.querySelector(".todo-modal-wrapper");
@@ -14,8 +26,8 @@ domManager.setClick("main button.add", ()=>{
     domManager.addEntryOfTemplate(".todo-list div:first-child", ".todo-list");
     todoModal.classList.remove("hidden");
 });
-domManager.setClick("button.data-clear", ()=>{localDataManager.reset()});
-
+domManager.setClick("button.data-clear", ()=>{localDataHandler.clear()});
+domManager.setClick(".tag-add", ()=>{domManager.addEntryOfTemplate("nav ul.tag-list li","nav ul.tag-list")})
 /*
 
 TODO
