@@ -92,7 +92,7 @@ domManager.setClick(".tag-add", ()=>{
         const postChangeEvent = ()=>{
             const textElement = domManager.swapInputWithText(input, "nav li:last-child .tag p", true);
             addTag({"name": textElement.textContent, "colorIndex": 0});
-
+            localDataHandler.save(sessionData.getData());
         };
         input.addEventListener("change", postChangeEvent);
     });
