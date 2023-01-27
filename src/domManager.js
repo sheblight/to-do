@@ -60,6 +60,7 @@ const domManager = (()=>{
         if (removeInput) {
             input.remove();
         }
+        return text;
     }
     
 

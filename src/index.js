@@ -18,17 +18,55 @@ const sessionData = (function() {
             deadline: "",
             priority: 3,
         }],
-        tags: ["Work", "Hobby", "Shopping"]
+        tags: [
+            { name:"Work", colorIndex:0 }, 
+            { name:"Hobby", colorIndex:1 }, 
+            { name:"Shopping", colorIndex:2 }
+        ],
+        // New colors must be appended to prevent order from being interfered
+        tagColors: ["#dd4242", "#7abb46", "#3d95e2"]
     };
 
     const getData = ()=>{ return JSON.parse(JSON.stringify(data))};
     const setData = (targetData)=> { data = targetData };
+    const clear = () => {
+        data.tags = [];
+        data.tasks = [];
+    }
     const update = function(key, value, handler) {
-        handler(this.data[key], value);
+        handler(data[key], value);
     };
 
-    return { getData, setData, update };
+    const pushHandler =  function(property, value) {
+        if (typeof property != "object") {
+            console.log(`${property} is not an array type.`);
+            return;
+        }
+        property.push(value);
+    }
+
+    // validation module to check if data has proper structure before usage
+    const validation = {
+        tag: function(property, handler) {
+            if (!(property["name"] || property["colorIndex"])) {
+                console.log(`${property} isn't a proper tag.`);
+                return;
+            }
+            if (handler) {
+                handler();
+            }
+        } 
+    };
+
+    return { getData, setData, clear, update, pushHandler, validation };
 })(); 
+
+// define handlers for session data
+const addColor = (colorValue) => sessionData.update("tagColor", colorValue, sessionData.pushHandler);
+const addTag = (tag) => sessionData.update("tags", tag, (property, value)=>{
+    sessionData.validation.tag(value, () => sessionData.pushHandler(property, value));
+    console.log("Adding tag to session");
+});
 
 // load existing data
 if (localDataHandler.hasExistingData()) {
@@ -40,25 +78,31 @@ console.log(sessionData.getData());
 
 // interactive tests
 // side menu
-domManager.setClick("button.data-clear", ()=>{localDataHandler.clear()});
 domManager.setClick(".tag-add", ()=>{
     // block add request if input is already active
     if (domManager.elementExists("li input")) {
         console.log("Cannot add tag since input is currently prompted");
         return;
     }
-
-    const entryPromise = new Promise((resolve)=>{
+    new Promise((resolve)=>{
         domManager.addEntryOfTemplate("nav ul.tag-list li","nav ul.tag-list");
         resolve("OK");
-    });
-    entryPromise.then((value)=>{
+    }).then((value)=>{
         const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
-        input.addEventListener("change", ()=>{domManager.swapInputWithText(input, "nav li:last-child .tag p", true);});
+        const postChangeEvent = ()=>{
+            const textElement = domManager.swapInputWithText(input, "nav li:last-child .tag p", true);
+            addTag({"name": textElement.textContent, "colorIndex": 0});
+
+        };
+        input.addEventListener("change", postChangeEvent);
     });
-    //sessionData.update("tags", outputName, function(keyRef, value) { keyRef.push(value);  });
     console.log("Disable adding tag until this is done");
 })
+domManager.setClick("button.data-clear", ()=>{
+    console.log(sessionData.getData());
+    localDataHandler.clear();
+    sessionData.clear();
+});
 
 // content
 domManager.setClick("main button.add", ()=>{
@@ -91,7 +135,9 @@ domManager.setClick("button.close", ()=>{domManager.toggleHidden(".task-modal-wr
 /*
 
 Functional TODOs:
-- Add task button moves all inputs into the new task entry
+
+- Declare a format for storing tag information.
+
 - Clicking on respective task opens task modal containing respective information
 - Updating a field in the task modal updates the task on the home page
 - Tags are saved to local upon adding and naming it 
@@ -99,5 +145,6 @@ Functional TODOs:
 
 Style TODOs:
 - Need to finish styling the task creation box for readability
+- Bug: Tag icon changes sizes depending on tag name length 
 
 */
