@@ -9,7 +9,7 @@ Stores, retrieves, and makes changes to session data.
 
 */
 const sessionData = (function() {
-    const data = {
+    let data = {
         version: "0.1.0",
         user: "Guest",
         tasks: [{
