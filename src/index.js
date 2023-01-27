@@ -32,7 +32,7 @@ const sessionData = (function() {
 
 // load existing data
 if (localDataHandler.hasExistingData()) {
-    localDataHandler.updateVersion(currentVersion, "version");
+    localDataHandler.updateVersion(sessionData.getData().version, "version");
     sessionData.setData(localDataHandler.getData());
 }
 console.log(sessionData.getData());
@@ -68,5 +68,9 @@ domManager.setClick(".tag-add", ()=>{
 /*
 
 TODO:
-
+- Bug: click event fires in Chrome but not in Firefox. Most likely because an error was thrown in Firefox.
+- Stylize and embed frame for selecting date
+- Cancel task button should remove the task element
+- Add task button should move all inputs into a task entry
+- 
 */
