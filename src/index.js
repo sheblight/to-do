@@ -4,7 +4,7 @@ import localDataHandler from "./localDataHandler.js"
 
 /*
 
-Class for session data.
+Module for session data.
 Stores, retrieves, and makes changes to session data.
 
 */
@@ -73,7 +73,19 @@ if (localDataHandler.hasExistingData()) {
     localDataHandler.updateVersion(sessionData.getData().version, "version");
     sessionData.setData(localDataHandler.getData());
 }
-console.log(sessionData.getData());
+
+const initData = sessionData.getData();
+const loadTag = (text) => {
+    domManager.addEntryOfTemplate("nav ul.tag-list li","nav ul.tag-list");
+    domManager.query("nav li:last-child .tag p").textContent = text;
+}
+for (const tag of initData.tags) {
+    loadTag(tag.name);
+}
+
+console.log(initData);
+
+
 
 
 // interactive tests
