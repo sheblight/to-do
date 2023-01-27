@@ -10,6 +10,19 @@ const domManager = (()=>{
         const element = query(elementSelector);
         element.addEventListener("click", callback);
     };
+    const toggleHidden = (selector) => {
+        const elementClassList = query(selector).classList;
+        if (elementClassList.contains("hidden")) {
+            elementClassList.remove("hidden");
+        }
+        else {
+            elementClassList.add("hidden");
+        }
+    }
+    const moveDown = (selector)=>{
+        const element = query(selector);
+        element.parentNode.appendChild(element);
+    };
 
     const addEntryOfTemplate = function(templateSelector, containerSelector) {
         const entryTemplate = query(templateSelector);
@@ -46,6 +59,6 @@ const domManager = (()=>{
     }
     
 
-    return {setClick, addEntryOfTemplate, addTemporaryInput, swapInputWithText, elementExists};
+    return {query, toggleHidden, moveDown, setClick, addEntryOfTemplate, addTemporaryInput, swapInputWithText, elementExists};
 })();
 export default domManager;

@@ -38,14 +38,8 @@ if (localDataHandler.hasExistingData()) {
 console.log(sessionData.getData());
 
 
-// testing interactivity
-const taskModal = document.querySelector(".task-modal-wrapper");
-domManager.setClick("button.close", ()=>{taskModal.classList.add("hidden")});
-domManager.setClick(".task-entry", ()=>{taskModal.classList.remove("hidden")});
-domManager.setClick("main button.add", ()=>{
-    domManager.addEntryOfTemplate(".task-list div:first-child", ".task-list");
-    taskModal.classList.remove("hidden");
-});
+// interactive tests
+// side menu
 domManager.setClick("button.data-clear", ()=>{localDataHandler.clear()});
 domManager.setClick(".tag-add", ()=>{
     // block add request if input is already active
@@ -65,11 +59,27 @@ domManager.setClick(".tag-add", ()=>{
     //sessionData.update("tags", outputName, function(keyRef, value) { keyRef.push(value);  });
     console.log("Disable adding tag until this is done");
 })
+
+// content
+domManager.setClick("main button.add", ()=>{
+    domManager.toggleHidden(".task-initial-entry");
+    domManager.moveDown(".task-initial-entry");
+});
+domManager.setClick(".task-initial-entry .cancel", ()=>{domManager.toggleHidden(".task-initial-entry")});
+domManager.setClick(".task-initial-entry .submit", ()=>{
+    domManager.toggleHidden(".task-initial-entry")
+    domManager.addEntryOfTemplate(".task-entry", ".task-list");
+    //domManager.setClick(entry, ()=>{domManager.toggleHidden(".task-modal-wrapper")});    
+});
+
+// todo modal
+domManager.setClick(".task-entry", ()=>{domManager.toggleHidden(".task-modal-wrapper")});
+domManager.setClick("button.close", ()=>{domManager.toggleHidden(".task-modal-wrapper")});
+
 /*
 
 TODO:
 - Bug: click event fires in Chrome but not in Firefox. Most likely because an error was thrown in Firefox.
-- Stylize and embed frame for selecting date
 - Cancel task button should remove the task element
 - Add task button should move all inputs into a task entry
 - 
