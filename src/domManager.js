@@ -5,6 +5,7 @@ Module for handling redundant DOM tasks.
 */
 const domManager = (()=>{
     function query(selector) { return document.querySelector(selector); }
+    function queryAll(selector) { return document.querySelectorAll(selector); }
     const elementExists = (selector) => query(selector) != null;
     const queryIfSelector = (selector)=>{ return typeof selector == "string" ? query(selector) : selector; };
     
@@ -64,6 +65,6 @@ const domManager = (()=>{
     }
     
 
-    return {query, toggleHidden, moveDown, setClick, addEntryOfTemplate, addTemporaryInput, swapInputWithText, elementExists};
+    return {query, queryAll, toggleHidden, moveDown, setClick, addEntryOfTemplate, addTemporaryInput, swapInputWithText, elementExists};
 })();
 export default domManager;

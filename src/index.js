@@ -114,6 +114,11 @@ domManager.setClick("button.data-clear", ()=>{
     console.log(sessionData.getData());
     localDataHandler.clear();
     sessionData.clear();
+    // clear out tags
+    const tags = domManager.queryAll("nav ul.tag-list li:not(.hidden)");
+    for (const tag of tags) {
+        tag.remove();
+    }
 });
 
 // content
