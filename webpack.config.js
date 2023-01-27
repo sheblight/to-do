@@ -5,6 +5,7 @@ module.exports = {
     entry: {
         index:'./src/index.js',
         domManager: './src/domManager.js',
+        localDataHandler: './src/localDataHandler.js',
     },
     devtool: 'inline-source-map',
     devServer: {
