@@ -54,7 +54,7 @@ domManager.setClick(".tag-add", ()=>{
     });
     entryPromise.then((value)=>{
         const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
-        input.addEventListener("change", ()=>{domManager.swapInputWithText(input, "nav li:last-child .tag p");});
+        input.addEventListener("change", ()=>{domManager.swapInputWithText(input, "nav li:last-child .tag p", true);});
     });
     //sessionData.update("tags", outputName, function(keyRef, value) { keyRef.push(value);  });
     console.log("Disable adding tag until this is done");
@@ -68,8 +68,20 @@ domManager.setClick("main button.add", ()=>{
 domManager.setClick(".task-initial-entry .cancel", ()=>{domManager.toggleHidden(".task-initial-entry")});
 domManager.setClick(".task-initial-entry .submit", ()=>{
     domManager.toggleHidden(".task-initial-entry")
-    domManager.addEntryOfTemplate(".task-entry", ".task-list");
-    //domManager.setClick(entry, ()=>{domManager.toggleHidden(".task-modal-wrapper")});    
+    const submitPromise = new Promise((resolve)=>{
+        resolve(domManager.addEntryOfTemplate(".task-entry", ".task-list"));
+    });
+    submitPromise.then((entry)=>{
+        const elementClasses = ["title", "description", "priority", "deadline"];
+        const count = elementClasses.length;
+
+        // mapping input results to respective elements
+        for (let i = 0; i < count; i++) {
+            domManager.swapInputWithText(domManager.query(`.task-initial-entry .${elementClasses[i]}`), `.task-entry:last-child .${elementClasses[i]}`);
+        }
+
+        // need to map tag group
+    });
 });
 
 // todo modal
@@ -78,9 +90,14 @@ domManager.setClick("button.close", ()=>{domManager.toggleHidden(".task-modal-wr
 
 /*
 
-TODO:
-- Bug: click event fires in Chrome but not in Firefox. Most likely because an error was thrown in Firefox.
-- Cancel task button should remove the task element
-- Add task button should move all inputs into a task entry
-- 
+Functional TODOs:
+- Add task button moves all inputs into the new task entry
+- Clicking on respective task opens task modal containing respective information
+- Updating a field in the task modal updates the task on the home page
+- Tags are saved to local upon adding and naming it 
+- Task is saved to local upon creating one and updating a field
+
+Style TODOs:
+- Need to finish styling the task creation box for readability
+
 */

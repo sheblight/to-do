@@ -6,6 +6,8 @@ Module for handling redundant DOM tasks.
 const domManager = (()=>{
     function query(selector) { return document.querySelector(selector); }
     const elementExists = (selector) => query(selector) != null;
+    const queryIfSelector = (selector)=>{ return typeof selector == "string" ? query(selector) : selector; };
+    
     const setClick = function(elementSelector, callback) {
         const element = query(elementSelector);
         element.addEventListener("click", callback);
@@ -51,11 +53,13 @@ const domManager = (()=>{
         return input;
     }
 
-    const swapInputWithText = function(input, textSelector) {
+    const swapInputWithText = function(input, textSelector, removeInput=false) {
         const text = query(textSelector);
         text.textContent = input.value;
         text.classList.remove("hidden");
-        input.remove();
+        if (removeInput) {
+            input.remove();
+        }
     }
     
 
