@@ -47,7 +47,7 @@
     </nav>
     <main>
         <div class="content-head" style="display:flex; justify-content:space-between; margin: 2rem; ">
-            <h1 style="font-size: 2rem;">Home</h1>
+            <h1 contenteditable="false" style="font-size: 2rem;">Home</h1>
             <button class="icon hidden" style="background-color: rgb(182, 50, 50); border-radius: 5px; width: 9rem;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>Remove Tag</title>
@@ -59,9 +59,26 @@
         <div class="content">
             <div class="head"></div>
             <div class="divider"></div>
-            <div class="todo-list">
-                <div class="todo-entry" style="margin: 2rem; ">
-                    <button class="todo-check">
+            <div class="task-list">
+                <div class="task-initial-entry" style="margin: 2rem; ">
+                    <input class="task-entry-title" style="grid-area: 1/1/1/-1; margin-left: 1rem; font-size:1rem;" placeholder="Task Title"></input>
+                    <input class="" style="grid-area: 2/1/2/-1; margin-left: 1rem;font-size:1rem;" placeholder="Description"></input>
+                    <select style="grid-area: 3/1/3/1;">
+                        <option>Tag1</option>
+                        <option>Tag2</option>
+                    </select>
+                    <p style="grid-area: 3/2/3/2;">01/01/2023</p>
+                    <select style="grid-area: 3/3/3/3;">
+                        <option>None</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                    <button style="grid-area: 3/5/3/5;">Cancel</button>
+                    <button style="grid-area: 3/6/3/6; background-color: #8dbe62; color: #ffffff;">Add task</button>
+                </div>
+                <div class="task-entry" style="margin: 2rem; ">
+                    <button class="task-check">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <title>radiobox-blank</title>
                             <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
@@ -71,7 +88,7 @@
                             <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z" />
                         </svg>
                     </button>
-                    <p class="todo-entry-title" style="margin-left: 1rem; font-size: 1.5rem; font-weight: 600;">TODO Title</p>
+                    <p class="task-entry-title" style="margin-left: 1rem; font-size: 1.5rem; font-weight: 600;">Task Title</p>
                     <p data-property="deadline">01/01/2023</p>
                     <div class="tag-group" style="margin-left: 1rem;">
                         <div class="tag icon" style="font-weight: normal;">
@@ -94,9 +111,9 @@
         </button>
     </main>
     <div class="init-modal hidden"></div>
-    <div class="todo-modal-wrapper hidden">
-        <div class="todo-modal">
-            <button class="todo-check">
+    <div class="task-modal-wrapper hidden">
+        <div class="task-modal">
+            <button class="task-check">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>radiobox-blank</title>
                     <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
@@ -113,11 +130,11 @@
                 </svg>
             </button>
             <!-- Content editable-->
-            <h1 contenteditable="true" data-property="title">TODO Title</h1>
+            <h1 contenteditable="true" data-property="title">task Title</h1>
             <p contenteditable="true" data-property="description">Description here.</p>
             <p data-property="deadline">Deadline: 01/01/2023</p>
             <p data-property="priority">Priority: High</p>
-            <button class="todo-remove">
+            <button class="task-remove">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>Remove Task</title>
                     <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z" />
