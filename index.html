@@ -55,7 +55,7 @@
             <div class="head"></div>
             <div class="divider"></div>
             <div class="task-list">
-                <div class="task-initial-entry" style="margin: 2rem; ">
+                <div class="task-initial-entry hidden" style="margin: 2rem; ">
                     <input class="task-entry-title" style="grid-area: 1/1/1/-1; margin-left: 1rem; font-size:1rem;" placeholder="Task Title"></input>
                     <input class="" style="grid-area: 2/1/2/-1; margin-left: 1rem;font-size:1rem;" placeholder="Description"></input>
                     <select style="grid-area: 3/1/3/1;">
@@ -69,8 +69,8 @@
                         <option>Medium</option>
                         <option>Low</option>
                     </select>
-                    <button style="grid-area: 3/5/3/5;">Cancel</button>
-                    <button style="grid-area: 3/6/3/6; background-color: #8dbe62; color: #ffffff;">Add task</button>
+                    <button class="cancel" style="grid-area: 3/5/3/5;">Cancel</button>
+                    <button class="submit" style="grid-area: 3/6/3/6; background-color: #8dbe62; color: #ffffff;">Add task</button>
                 </div>
                 <div class="task-entry" style="margin: 2rem; ">
                     <button class="task-check">
