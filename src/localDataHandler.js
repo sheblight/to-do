@@ -36,7 +36,7 @@ const localDataHandler = (()=>{
     // Updates the stored data format to current data format
     // Save updated data format to the local storage
     const updateVersion = (currentVersion, versionProperty) => {
-        const storedVersion = window.localStorage[versionProperty];
+        const storedVersion = window.localStorage.data[versionProperty];
         if (!storedVersion) {
             console.warn("Couldn't find reference to the version on local storage");
             return;

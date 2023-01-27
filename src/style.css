@@ -75,6 +75,16 @@ nav .icon {
     padding: 0;
 }
 
+nav input {
+    padding: 0.5rem;
+    width: 60%;  
+    color:var(--text-color)
+}
+
+nav .tag p {
+    width: 60%;
+}
+
 /* main content */
 main {
     padding: 2rem 4rem;
