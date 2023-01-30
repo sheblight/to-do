@@ -3,12 +3,13 @@ import sessionDataHandler from "./sessionDataHandler.js";
 import domManager from "./domManager.js";
 import localDataHandler from "./localDataHandler.js"
 
+// Selector constants
 const tagListSelector = "nav ul.tag-list";
-const taskListSelector = ".task-list";
 const tagEntrySample = `${tagListSelector} li`;
+const taskListSelector = ".task-list";
 const taskEntrySample = ".task-entry";
 
-// first-time users start with this data here
+// first-time users initialize with this data
 const initialData = {
     version: "0.1.0",
     user: "Guest",
@@ -28,44 +29,40 @@ const initialData = {
 };
 const sessionData = sessionDataHandler(initialData);
 
-// define handlers for session data
-const addTag = (tag) => sessionData.update("tags", tag, "tag", (property, value) => {
-    sessionData.pushHandler(property, value);
-    console.log("Adding tag to session");
-});
-const addColor = colorValue => sessionData.update("tagColor", colorValue, "color", sessionData.pushHandler);
-
-// load existing data
-const loadFromLocalData = () => {
-    if (localDataHandler.hasExistingData()) {
-        localDataHandler.updateVersion(sessionData.getData().version, "version");
-        sessionData.setData(localDataHandler.getData());
-    }
-    return sessionData.getData();
-}
-
-
-const loadTag = tag => {
-    domManager.addEntryOfTemplate(tagEntrySample,tagListSelector);
-    domManager.query("nav li:last-child .tag p").textContent = tag.name;
-}
-const loadTask = task => {
-    domManager.addEntryOfTemplate(taskEntrySample, taskListSelector);
-    // TODO: fill in task data for each property
-}
-
-const buttonEvent = {
-    clearAll: function() {
-        localDataHandler.clear();
-        sessionData.clear();
-        // clear out tags
-        const tags = domManager.queryAll("nav ul.tag-list li:not(.hidden)");
-        for (const tag of tags) {
-            tag.remove();
+// load methods
+const loadHandler = {
+    getLocalData: () => {
+        if (localDataHandler.hasExistingData()) {
+            localDataHandler.updateVersion(sessionData.getData().version, "version");
+            sessionData.setData(localDataHandler.getData());
         }
+        return sessionData.getData();
     },
+    loadTag: tag => {
+        domManager.addEntryOfTemplate(tagEntrySample,tagListSelector);
+        domManager.query("nav li:last-child .tag p").textContent = tag.name;
+    },
+    loadTask: task => {
+        domManager.addEntryOfTemplate(taskEntrySample, taskListSelector);
+        // TODO: fill in task data for each property
+    }
+}
+
+// save methods
+const saveHandler = {
+    addTag: (tag) => sessionData.update("tags", tag, "tag", (property, value) => {
+        sessionData.pushHandler(property, value);
+        console.log("Adding tag to session");
+    }),
+    addColor: colorValue => sessionData.update("tagColor", colorValue, "color", sessionData.pushHandler)
+};
+
+// button events
+const buttonEvent = {
+    moveToHome: ()=>{ /* TODO */ },
+    filterByTag: ()=> { /* TODO */ },
     addTag: ()=>{
-        // block add request if input is already active
+        // block request to add if input field is already active
         if (domManager.elementExists("li input")) {
             console.log("Cannot add tag since input is currently prompted");
             return;
@@ -75,14 +72,22 @@ const buttonEvent = {
             resolve("OK");
         }).then((value)=>{
             const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
-            const postChangeEvent = ()=>{
+            input.addEventListener("change", ()=>{
                 const textElement = domManager.swapInputWithText(input, "nav li:last-child .tag p", true);
-                addTag({"name": textElement.textContent, "colorIndex": 0});
+                saveHandler.addTag({"name": textElement.textContent, "colorIndex": 0});
                 localDataHandler.save(sessionData.getData());
-            };
-            input.addEventListener("change", postChangeEvent);
+            });
         });
         console.log("Disable adding tag until this is done");
+    },
+    clearAll: function() {
+        localDataHandler.clear();
+        sessionData.clear();
+        // clear out tags
+        const tags = domManager.queryAll("nav ul.tag-list li:not(.hidden)");
+        for (const tag of tags) {
+            tag.remove();
+        }
     },
     addTask: ()=>{
         domManager.toggleHidden(".task-initial-entry");
@@ -96,36 +101,36 @@ const buttonEvent = {
         }).then((entry)=>{
             const elementClasses = ["title", "description", "priority", "deadline"];
             const count = elementClasses.length;
-    
             // mapping input results to respective elements
             for (let i = 0; i < count; i++) {
                 domManager.swapInputWithText(domManager.query(`.task-initial-entry .${elementClasses[i]}`), `.task-entry:last-child .${elementClasses[i]}`);
             }
-    
             // TODO: load in selected tags
         });
     },
     openTask: ()=>{domManager.toggleHidden(".task-modal-wrapper")},
     closeTask: ()=>{domManager.toggleHidden(".task-modal-wrapper")},
+    toggleCheckTask: ()=>{ /* TODO */ },
+    removeTask: ()=>{ /* TODO */ }
 };
+const selectorToEventMap = new Map([
+    [".tag-add", buttonEvent.addTag],
+    ["button.data-clear", buttonEvent.clearAll],
+    ["main button.add", buttonEvent.addTask],
+    [".task-initial-entry .cancel", buttonEvent.cancelTaskCreate],
+    [".task-initial-entry .submit", buttonEvent.submitTaskCreate],
+    [".task-entry", buttonEvent.openTask],
+    ["button.close", buttonEvent.closeTask],
+]);
 
+// load in local data, then into DOM
+const initData = loadHandler.getLocalData();
+initData.tags.forEach(tag => loadHandler.loadTag(tag));
 
-// load in DOM
-const initData = loadFromLocalData();
-initData.tags.forEach(tag => loadTag(tag));
+// map button click event to each button
+selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value));
+
 console.log(initData); // local data debug
-
-// interactive tests
-// side menu
-domManager.setClick(".tag-add", buttonEvent.addTag);
-domManager.setClick("button.data-clear", buttonEvent.clearAll);
-// content
-domManager.setClick("main button.add", buttonEvent.addTask);
-domManager.setClick(".task-initial-entry .cancel", buttonEvent.cancelTaskCreate);
-domManager.setClick(".task-initial-entry .submit", buttonEvent.submitTaskCreate);
-// todo modal
-domManager.setClick(".task-entry", buttonEvent.openTask);
-domManager.setClick("button.close", buttonEvent.closeTask);
 
 /*
 Current TODO:
