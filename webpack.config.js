@@ -6,6 +6,7 @@ module.exports = {
         index:'./src/index.js',
         domManager: './src/domManager.js',
         localDataHandler: './src/localDataHandler.js',
+        sessionDataHandler: './src/sessionDataHandler.js',
     },
     devtool: 'inline-source-map',
     devServer: {
