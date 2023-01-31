@@ -46,8 +46,10 @@ const loadHandler = {
         domManager.addEntryOfTemplate(taskEntrySample, taskListSelector);
         // TODO: fill in task data for each property
     },
-    loadTagsInDropdown: tags => {
+    loadTagInDropdown: tag => {
         /* TODO */
+        const tagEntry = domManager.addEntryOfTemplate(".task-creation .tag-group > li", ".task-creation .tag-group ul");
+        tagEntry.childNodes[1].nodeValue = tag.name;
     },
     loadTaskToModal: task => {
         /* TODO */
@@ -99,6 +101,10 @@ const buttonEvent = {
         domManager.toggleHidden(".task-creation");
         domManager.moveDown(".task-creation");
     },
+    toggleSelectTag: ()=> {
+        const tagList = domManager.query(".task-creation .tag-group ul");
+        domManager.toggleHidden(tagList);
+    },
     cancelTaskCreate: ()=>{domManager.toggleHidden(".task-creation")},
     submitTaskCreate: ()=>{
         domManager.toggleHidden(".task-creation")
@@ -123,6 +129,7 @@ const selectorToEventMap = new Map([
     [".tag-add", buttonEvent.addTag],
     ["button.data-clear", buttonEvent.clearAll],
     ["main button.add", buttonEvent.addTask],
+    [".task-creation .tag-group p", buttonEvent.toggleSelectTag],
     [".task-creation .cancel", buttonEvent.cancelTaskCreate],
     [".task-creation .submit", buttonEvent.submitTaskCreate],
     [".task-entry", buttonEvent.openTask],
@@ -131,7 +138,11 @@ const selectorToEventMap = new Map([
 
 // load in local data, then into DOM
 const initData = loadHandler.getLocalData();
-initData.tags.forEach(tag => loadHandler.loadTagInSidebar(tag));
+initData.tags.forEach(tag => {
+    loadHandler.loadTagInSidebar(tag);
+    loadHandler.loadTagInDropdown(tag);
+});
+
 
 // map button click event to each button
 selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value));

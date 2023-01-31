@@ -14,7 +14,7 @@ const domManager = (()=>{
         element.addEventListener("click", callback);
     };
     const toggleHidden = (selector) => {
-        const elementClassList = query(selector).classList;
+        const elementClassList = queryIfSelector(selector).classList;
         if (elementClassList.contains("hidden")) {
             elementClassList.remove("hidden");
         }
