@@ -13,13 +13,18 @@ const taskEntrySample = ".task-entry";
 const initialData = {
     version: "0.1.0",
     user: "Guest",
-    tasks: [{
-        checked: false,
-        title: "Add New Task",
-        description: "Pressing \"Add Task\" at the bottom adds a new task.",
-        deadline: "",
-        priority: 3,
-    }],
+    tasks: [
+        {
+            checked: false,
+            title: "Add New Task",
+            description: "Pressing \"Add Task\" at the bottom adds a new task.",
+            deadline: "",
+            priority: 3,
+            tags: [
+                { name:"Work", colorIndex:0 }    
+            ]
+        }
+    ],
     tags: [
         { name:"Work", colorIndex:0 }, 
         { name:"Hobby", colorIndex:1 }, 
@@ -44,8 +49,24 @@ const loadHandler = {
         domManager.query("nav li:last-child .tag p").textContent = tag.name;
     },
     loadTaskToContent: task => {
-        domManager.addEntryOfTemplate(taskEntrySample, taskListSelector);
-        // TODO: fill in task data for each property
+        console.log(`Add ${task.title} task to content`);
+        // fill in task data for each property
+        domManager.addEntryOfTemplate(".task-entry", ".task-list")
+        const elementClasses = ["title", "description", "priority", "deadline"];
+        const count = elementClasses.length;
+        // Mapping input results to respective elements
+        for (let i = 0; i < count; i++) {
+            const field = domManager.query(`.task-entry:last-child .${elementClasses[i]}`);
+            field.textContent = task[elementClasses[i]];
+        }
+        // store selected tags into task
+        const tagOptions = domManager.queryAll(".task-entry:last-child .tag-group ul input");
+        for (const tagEntry of task.tags) {
+            const tagDisplay = domManager.addEntryOfTemplate(".task-entry:last-child .tag-group div", ".task-entry:last-child .tag-group");
+            tagDisplay.childNodes[3].textContent = tagEntry.name;
+        }
+        // save task locally
+        console.log(task);
     },
     loadTagInDropdown: tag => {
         const tagEntry = domManager.addEntryOfTemplate(".task-creation .tag-group > li", ".task-creation .tag-group ul");
@@ -165,6 +186,10 @@ initData.tags.forEach(tag => {
     loadHandler.loadTagInDropdown(tag);
 });
 buttonEvent.toggleSelectTag();
+const taskCount = initData.tasks.length;
+for (let i=0, p=Promise.resolve(); i<taskCount; i++) {
+    p = p.then(loadHandler.loadTaskToContent(initData.tasks[i]));
+}
 
 // map button click event to each button
 selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value));
@@ -173,7 +198,7 @@ console.log(initData); // local data debug
 
 /*
 Current TODO:
-- Add tag dropdowns
+- Switch to MVC
 
 Functional TODOs:
 - Clicking on respective task opens task modal containing respective information
