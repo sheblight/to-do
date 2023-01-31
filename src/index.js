@@ -47,7 +47,6 @@ const loadHandler = {
         // TODO: fill in task data for each property
     },
     loadTagInDropdown: tag => {
-        /* TODO */
         const tagEntry = domManager.addEntryOfTemplate(".task-creation .tag-group > li", ".task-creation .tag-group ul");
         tagEntry.childNodes[1].nodeValue = tag.name;
     },
@@ -120,15 +119,27 @@ const buttonEvent = {
             let task = {}
             const elementClasses = ["title", "description", "priority", "deadline"];
             const count = elementClasses.length;
-            // mapping input results to respective elements
+            // Mapping input results to respective elements
             for (let i = 0; i < count; i++) {
                 const input = domManager.query(`.task-creation .${elementClasses[i]}`);
                 task[elementClasses[i]] = input.value;
                 domManager.swapInputWithText(input, `.task-entry:last-child .${elementClasses[i]}`);
             }
-            console.log(task);
-            // TODO: store all selected tags into task
+            // store selected tags into task
+            const tagList = sessionData.getData().tags;
+            const tagOptions = domManager.queryAll(".task-creation .tag-group ul input");
+            const tagGroupDisplay = domManager.query(".task-entry:last-child .tag-group"); 
+            task.tags = [];
+            for (let i = 0; i < tagList.length; i++) {
+                if (!tagOptions[i].checked) continue;
+                task.tags.push(tagList[i]);
+                // add to task display
+                const tagDisplay = domManager.addEntryOfTemplate(".task-entry:last-child .tag-group div", ".task-entry:last-child .tag-group");
+                tagDisplay.childNodes[3].textContent = tagList[i].name;
+            }
+            
             // TODO: save task locally
+            console.log(task);
         });
     },
     openTask: ()=>{domManager.toggleHidden(".task-modal-wrapper")},
@@ -153,7 +164,7 @@ initData.tags.forEach(tag => {
     loadHandler.loadTagInSidebar(tag);
     loadHandler.loadTagInDropdown(tag);
 });
-
+buttonEvent.toggleSelectTag();
 
 // map button click event to each button
 selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value));
