@@ -56,13 +56,16 @@
             <div class="head"></div>
             <div class="divider"></div>
             <div class="task-list">
-                <div class="task-initial-entry hidden" style="margin: 2rem; ">
+                <div class="task-creation hidden" style="margin: 2rem; ">
                     <input class="title" style="grid-area: 1/1/1/-1; margin-left: 1rem; font-size:1rem;" placeholder="Task Title"></input>
                     <input class="description" style="grid-area: 2/1/2/-1; margin-left: 1rem;font-size:1rem;" placeholder="Description"></input>
-                    <select class="tag-group" style="grid-area: 3/1/3/1;">
-                        <option>Tag1</option>
-                        <option>Tag2</option>
-                    </select>
+                    <div class="tag-group" style="grid-area: 3/1/3/1; color:var(--text-color); display:inline-block; flex-basis:7rem">
+                        <p>Select tags</p>
+                        <ul style="list-style:none;">
+                            <li><input type="checkbox"> Tag group</li>
+                            <li><input type="checkbox"> Tag group</li>
+                        </ul>
+                    </div>
                     <input class="deadline" type="date" style="grid-area: 3/2/3/2;">
                     <select class="priority" style="grid-area: 3/3/3/3;">
                         <option>None</option>

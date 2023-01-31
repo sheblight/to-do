@@ -38,14 +38,20 @@ const loadHandler = {
         }
         return sessionData.getData();
     },
-    loadTag: tag => {
+    loadTagInSidebar: tag => {
         domManager.addEntryOfTemplate(tagEntrySample,tagListSelector);
         domManager.query("nav li:last-child .tag p").textContent = tag.name;
     },
-    loadTask: task => {
+    loadTaskToContent: task => {
         domManager.addEntryOfTemplate(taskEntrySample, taskListSelector);
         // TODO: fill in task data for each property
-    }
+    },
+    loadTagsInDropdown: tags => {
+        /* TODO */
+    },
+    loadTaskToModal: task => {
+        /* TODO */
+    },
 }
 
 // save methods
@@ -90,12 +96,12 @@ const buttonEvent = {
         }
     },
     addTask: ()=>{
-        domManager.toggleHidden(".task-initial-entry");
-        domManager.moveDown(".task-initial-entry");
+        domManager.toggleHidden(".task-creation");
+        domManager.moveDown(".task-creation");
     },
-    cancelTaskCreate: ()=>{domManager.toggleHidden(".task-initial-entry")},
+    cancelTaskCreate: ()=>{domManager.toggleHidden(".task-creation")},
     submitTaskCreate: ()=>{
-        domManager.toggleHidden(".task-initial-entry")
+        domManager.toggleHidden(".task-creation")
         new Promise((resolve)=>{
             resolve(domManager.addEntryOfTemplate(".task-entry", ".task-list"));
         }).then((entry)=>{
@@ -103,7 +109,7 @@ const buttonEvent = {
             const count = elementClasses.length;
             // mapping input results to respective elements
             for (let i = 0; i < count; i++) {
-                domManager.swapInputWithText(domManager.query(`.task-initial-entry .${elementClasses[i]}`), `.task-entry:last-child .${elementClasses[i]}`);
+                domManager.swapInputWithText(domManager.query(`.task-creation .${elementClasses[i]}`), `.task-entry:last-child .${elementClasses[i]}`);
             }
             // TODO: load in selected tags
         });
@@ -117,15 +123,15 @@ const selectorToEventMap = new Map([
     [".tag-add", buttonEvent.addTag],
     ["button.data-clear", buttonEvent.clearAll],
     ["main button.add", buttonEvent.addTask],
-    [".task-initial-entry .cancel", buttonEvent.cancelTaskCreate],
-    [".task-initial-entry .submit", buttonEvent.submitTaskCreate],
+    [".task-creation .cancel", buttonEvent.cancelTaskCreate],
+    [".task-creation .submit", buttonEvent.submitTaskCreate],
     [".task-entry", buttonEvent.openTask],
     ["button.close", buttonEvent.closeTask],
 ]);
 
 // load in local data, then into DOM
 const initData = loadHandler.getLocalData();
-initData.tags.forEach(tag => loadHandler.loadTag(tag));
+initData.tags.forEach(tag => loadHandler.loadTagInSidebar(tag));
 
 // map button click event to each button
 selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value));
@@ -134,7 +140,7 @@ console.log(initData); // local data debug
 
 /*
 Current TODO:
-- Reduce the code in index.js but keep it flexible
+- Add tag dropdowns
 
 Functional TODOs:
 - Clicking on respective task opens task modal containing respective information
