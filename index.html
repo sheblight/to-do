@@ -13,7 +13,7 @@
     <header>
         <div class="menu-tag">
     </header>
-    <nav class="menu">
+    <nav class="menu" style="float:left;">
         <ul class="menu-time-options" style="grid-area:2/1/2/1;">
             <li>
                 <div class="home icon">
@@ -59,11 +59,12 @@
                 <div class="task-creation hidden" style="margin: 2rem; ">
                     <input class="title" style="grid-area: 1/1/1/-1; margin-left: 1rem; font-size:1rem;" placeholder="Task Title"></input>
                     <input class="description" style="grid-area: 2/1/2/-1; margin-left: 1rem;font-size:1rem;" placeholder="Description"></input>
-                    <div class="tag-group" style="grid-area: 3/1/3/1; color:var(--text-color); display:inline-block; flex-basis:7rem">
-                        <p>Select tags</p>
-                        <ul style="list-style:none;">
-                            <li><input type="checkbox"> Tag group</li>
-                            <li><input type="checkbox"> Tag group</li>
+                    <div class="tag-group" style="grid-area: 3/1/3/1; color:var(--text-color); display:inline-block; flex-basis:7rem;">
+                        <p style="position:relative;">Select Tags</p>
+                        <!-- use the li below for tag entry template-->
+                        <li class="tag-item hidden"><input type="checkbox">TagName</li>
+                        <ul style="list-style:none;  position:absolute;">
+                            <!-- Add tags dynamically here -->
                         </ul>
                     </div>
                     <input class="deadline" type="date" style="grid-area: 3/2/3/2;">
