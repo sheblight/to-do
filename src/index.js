@@ -56,13 +56,19 @@ const loadHandler = {
     },
 }
 
-// save methods
+// save methods for storing into local data
 const saveHandler = {
-    addTag: (tag) => sessionData.update("tags", tag, "tag", (property, value) => {
+    createTag: (tag) => sessionData.update("tags", tag, "tag", (property, value) => {
         sessionData.pushHandler(property, value);
         console.log("Adding tag to session");
     }),
-    addColor: colorValue => sessionData.update("tagColor", colorValue, "color", sessionData.pushHandler)
+    addTagToTask: (tag, task) => { /* TODO */},
+    addTagsToTask: (tags,task) => {/* TODO */},
+    addTaskToEntry: task => sessionData.update("tasks", task, "task", (property, value) => {
+        sessionData.pushHandler(property, value);
+        console.log("Adding task to session");
+    }),
+    //addColor: colorValue => sessionData.update("tagColor", colorValue, "color", sessionData.pushHandler),
 };
 
 // button events
@@ -82,7 +88,7 @@ const buttonEvent = {
             const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
             input.addEventListener("change", ()=>{
                 const textElement = domManager.swapInputWithText(input, "nav li:last-child .tag p", true);
-                saveHandler.addTag({"name": textElement.textContent, "colorIndex": 0});
+                saveHandler.createTag({"name": textElement.textContent, "colorIndex": 0});
                 localDataHandler.save(sessionData.getData());
             });
         });
@@ -111,13 +117,18 @@ const buttonEvent = {
         new Promise((resolve)=>{
             resolve(domManager.addEntryOfTemplate(".task-entry", ".task-list"));
         }).then((entry)=>{
+            let task = {}
             const elementClasses = ["title", "description", "priority", "deadline"];
             const count = elementClasses.length;
             // mapping input results to respective elements
             for (let i = 0; i < count; i++) {
-                domManager.swapInputWithText(domManager.query(`.task-creation .${elementClasses[i]}`), `.task-entry:last-child .${elementClasses[i]}`);
+                const input = domManager.query(`.task-creation .${elementClasses[i]}`);
+                task[elementClasses[i]] = input.value;
+                domManager.swapInputWithText(input, `.task-entry:last-child .${elementClasses[i]}`);
             }
-            // TODO: load in selected tags
+            console.log(task);
+            // TODO: store all selected tags into task
+            // TODO: save task locally
         });
     },
     openTask: ()=>{domManager.toggleHidden(".task-modal-wrapper")},
