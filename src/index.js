@@ -179,6 +179,9 @@ const selectorToEventMap = new Map([
     ["button.close", buttonEvent.closeTask],
 ]);
 
+/*
+// PREVIOUS CONTROLLER 
+
 // load in local data, then into DOM
 const initData = loadHandler.getLocalData();
 initData.tags.forEach(tag => {
@@ -195,15 +198,78 @@ for (let i=0, p=Promise.resolve(); i<taskCount; i++) {
 selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value));
 
 console.log(initData); // local data debug
+*/
+
+
+/*
+[Controller Responsibilities]
+Request MODEL for <user data>
+Request VIEW to generate side menu tag display of (tags)
+Request VIEW to generate home view of (tasks)
+Set callback to each button with the button click events:
+    Home: 
+        Request VIEW to generate task view of (tasks)
+    New Tag: 
+        Request VIEW to prompt user for <tag name>. Await for response.
+        On success, request MODEL to register (tagName). Then request VIEW to display new tag. 
+        On error, generate message.
+    Reset Data:
+        Request MODEL to reset to default data
+        Request VIEW to regenerate side menu with (tags)
+        Request VIEW to regenerate home display of (data)
+    Add Task:
+        Request VIEW to display task creation modal. Throw error if already open and otherwise open.
+    Tag List Dropdown:
+        If active, request VIEW to display task list dropdown. Otherwise, hide dropdown.
+    Cancel Task:
+        Request VIEW to close task creation modal.
+    Submit Task:
+        Request VIEW for <task info> from task creation modal
+        Request VIEW to close task creation modal
+        Request MODEL to register (task)
+        Set callback to new entry to Per Entry event 
+    Update Task:
+        Request VIEW for task details
+        Request MODEL to save (task) details
+        Request VIEW to close task detail modal
+    Remove Task:
+        Request VIEW to close task detail modal
+        Request VIEW to remove the current (task) entry
+        Request MODEL to remove (task)
+    Close Task Modal:
+        Request VIEW to close task detail modal
+
+Set callback for all entry click events: 
+    Per Tag:
+        Request VIEW for clicked <tag name>
+        Request MODEL to generate task list view containing only tasks with (clickedTag)
+        Request VIEW to generate with (data).
+    Per Entry:
+        Request VIEW for clicked task entry <index id>
+        Request MODEL for <task info> with (index id)
+        Request VIEW to open task modal
+        Request VIEW to generate (task) details on the modal and return <tag entries>
+        Set this callback per tag entry:
+            Request VIEW to highlight/unhighlight tag
+    Per Checkmark on Entry:
+        Request MODEL to complete (selected task).
+        On success, request VIEW for completed check on the entry of (selected task)
+
+As for the button events that needs to be generated in realtime...
+*/
+
+
+
+
+
 
 /*
 Current TODO:
-- Switch to MVC
+- Switch to MVC design
 
 Functional TODOs:
 - Clicking on respective task opens task modal containing respective information
 - Updating a field in the task modal updates the task on the home page
-- Tags are saved to local upon adding and naming it 
 - Task is saved to local upon creating one and updating a field
 
 Style TODOs:
