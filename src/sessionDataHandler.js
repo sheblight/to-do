@@ -35,8 +35,12 @@ const sessionDataHandler = (_data => {
     // every method must return true if the property follows the format
     const validation = {
         tag: property => property["name"] && (property["colorIndex"]!=null), 
-        task: property => (property["checked"]!=null) && property["title"] 
-        && property["description"] && property["deadline"] && property["priority"] && property["tags"]
+        task: property => (property["checked"] != null) 
+        && (typeof property["title"] == "string") 
+        && (typeof property["description"] == "string") 
+        && (typeof property["deadline"] == "string") 
+        && (typeof property["priority"] == "string") 
+        && property["tags"]
     };
 
     return { getData, setData, clear, update, pushHandler};

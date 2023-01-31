@@ -14,6 +14,7 @@ const initialData = {
     version: "0.1.0",
     user: "Guest",
     tasks: [{
+        checked: false,
         title: "Add New Task",
         description: "Pressing \"Add Task\" at the bottom adds a new task.",
         deadline: "",
@@ -116,7 +117,7 @@ const buttonEvent = {
         new Promise((resolve)=>{
             resolve(domManager.addEntryOfTemplate(".task-entry", ".task-list"));
         }).then((entry)=>{
-            let task = {}
+            let task = { checked: false, tags: [] };
             const elementClasses = ["title", "description", "priority", "deadline"];
             const count = elementClasses.length;
             // Mapping input results to respective elements
@@ -128,8 +129,6 @@ const buttonEvent = {
             // store selected tags into task
             const tagList = sessionData.getData().tags;
             const tagOptions = domManager.queryAll(".task-creation .tag-group ul input");
-            const tagGroupDisplay = domManager.query(".task-entry:last-child .tag-group"); 
-            task.tags = [];
             for (let i = 0; i < tagList.length; i++) {
                 if (!tagOptions[i].checked) continue;
                 task.tags.push(tagList[i]);
@@ -137,8 +136,9 @@ const buttonEvent = {
                 const tagDisplay = domManager.addEntryOfTemplate(".task-entry:last-child .tag-group div", ".task-entry:last-child .tag-group");
                 tagDisplay.childNodes[3].textContent = tagList[i].name;
             }
-            
-            // TODO: save task locally
+            // save task locally
+            saveHandler.addTaskToEntry(task);
+            localDataHandler.save(sessionData.getData());
             console.log(task);
         });
     },
