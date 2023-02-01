@@ -253,7 +253,7 @@ const buttonEvent = {
         console.log("Load home view.")
     },
     addTag: ()=>{
-        view.promptNewTag();
+        view.openTagModal();
     },
     closeTagModal: ()=>{
         view.closeTagModal();
@@ -270,10 +270,7 @@ const buttonEvent = {
         });
     },
     newTask: ()=>{
-        return;
         view.openTaskCreation();
-        //domManager.toggleHidden(".task-creation");
-        //domManager.moveDown(".task-creation");
     },
     toggleSelectTag: ()=> {
         return;
@@ -282,9 +279,7 @@ const buttonEvent = {
         //domManager.toggleHidden(tagList);
     },
     discardTask: ()=>{
-        return;
         view.closeTaskCreation();
-        //domManager.toggleHidden(".task-creation")
     },
     createTask: ()=>{
         return;

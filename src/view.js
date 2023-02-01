@@ -9,6 +9,7 @@ const view = (()=>{
     const taskEntryListElement = domManager.query(".task-list");
     const tagListElement = domManager.query("nav ul.tag-list");
     const tagModalElement = domManager.query(".tag-modal-wrapper");
+    const taskCreationElement = domManager.query(".task-creation");
     const taskModalElement = domManager.query(".task-modal-wrapper");
     // cached selectors
     const tagListSelector = "nav ul.tag-list";
@@ -92,7 +93,7 @@ const view = (()=>{
         });
     }
 
-    const promptNewTag = () => {
+    const openTagModal = () => {
         domManager.toggleHidden(tagModalElement);
     }
 
@@ -110,14 +111,23 @@ const view = (()=>{
         console.log(`Added ${tag.name}`);
     };
 
+    const openTaskCreation = ()=> {
+        domManager.toggleHidden(taskCreationElement);
+    }
+    const closeTaskCreation = ()=> {
+        domManager.toggleHidden(taskCreationElement);
+    }
+
     return { 
         querySelected, 
         generateSideMenuTags, 
         generateHomeView,
-        promptNewTag,
+        openTagModal,
         closeTagModal,
         extractTag,
-        addNewTag
+        addNewTag,
+        openTaskCreation,
+        closeTaskCreation
     }
     
 })();
