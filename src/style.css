@@ -181,14 +181,14 @@ main .icon {
 
 
 /* task modal */
-.task-modal-wrapper {
+.task-modal-wrapper, .tag-modal-wrapper {
     position:fixed;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0,0,0,0.3);
 }
 
-.task-modal {
+.task-modal, .tag-modal {
     position: inherit;
     --modal-width: 300px;
     --modal-height: 300px;

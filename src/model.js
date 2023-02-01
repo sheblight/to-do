@@ -17,14 +17,14 @@ const model = (function() {
                 deadline: "",
                 priority: 3,
                 tags: [
-                    { name:"Work", colorIndex:0 }    
+                    { name:"Work", color:"#000000" }    
                 ]
             }
         ],
         tags: [
-            { name:"Work", colorIndex:0 }, 
-            { name:"Hobby", colorIndex:1 }, 
-            { name:"Shopping", colorIndex:2 }
+            { name:"Work", color:"#000000" }, 
+            { name:"Hobby", color:"#000000" }, 
+            { name:"Shopping", color:"#000000" }
         ],
         // New colors must be appended to prevent order from being interfered
         tagColors: ["#dd4242", "#7abb46", "#3d95e2"]
@@ -42,9 +42,14 @@ const model = (function() {
         return getDataCopy();
     }
 
-    const addNewTag = (tagName) => {
-        // TODO: add tag to data operation
-        return {name: tagName, colorIndex: 0};
+    const addNewTag = (tag) => {
+        if (!tag["name"] || !tag["color"]) {
+            console.error("Extracted invalid tag format");
+            return null;
+        }
+        sessionData.tags.push(tag);
+        localDataHandler.save(sessionData);
+        return tag;
     }
 
     return { 

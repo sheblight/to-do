@@ -8,6 +8,8 @@ const view = (()=>{
     // cached elements
     const taskEntryListElement = domManager.query(".task-list");
     const tagListElement = domManager.query("nav ul.tag-list");
+    const tagModalElement = domManager.query(".tag-modal-wrapper");
+    const taskModalElement = domManager.query(".task-modal-wrapper");
     // cached selectors
     const tagListSelector = "nav ul.tag-list";
     const tagEntrySample = `${tagListSelector} li`;
@@ -91,6 +93,8 @@ const view = (()=>{
     }
 
     const promptNewTag = () => {
+        domManager.toggleHidden(tagModalElement);
+        return;
         return new Promise((resolve, error)=>{
             if (tagAddDisableReason) {
                 error(tagAddDisableReason);
@@ -104,10 +108,22 @@ const view = (()=>{
                 //const tagName = input.textContent;
                 //input.remove();
                 resolve("pog");
+                tagAddDisableReason = "";
             });
         });
     }
+
+    const closeTagModal = () => {
+        domManager.toggleHidden(tagModalElement);
+    }
+
+    const extractTag = () => {
+        const form = document.forms["newTagForm"];
+        return {name: form["name"].value, color: form["color"]}
+    }
+
     const addNewTag = (tag) => {
+        addTagEntry(tag);
         console.log(`Added ${tag.name}`);
     };
 
@@ -116,6 +132,8 @@ const view = (()=>{
         generateSideMenuTags, 
         generateHomeView,
         promptNewTag,
+        closeTagModal,
+        extractTag,
         addNewTag
     }
     

@@ -253,31 +253,20 @@ const buttonEvent = {
         console.log("Load home view.")
     },
     addTag: ()=>{
+        view.promptNewTag();
+        return;
         view.promptNewTag().then(tagName => {
-            view.addNewTag(model.addNewTag(tagName));
+            
         }, (errorMsg)=>{
             console.warn(errorMsg);
         });
-        
-        // block request to add if input field is already active
-        /*
-        if (domManager.elementExists("li input")) {
-            console.log("Cannot add tag since input is currently prompted");
-            return;
-        }
-        new Promise((resolve)=>{
-            domManager.addEntryOfTemplate(tagEntrySample, tagListSelector);
-            resolve("OK");
-        }).then((value)=>{
-            const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
-            input.addEventListener("change", ()=>{
-                const textElement = domManager.swapInputWithText(input, "nav li:last-child .tag p", true);
-                saveHandler.createTag({"name": textElement.textContent, "colorIndex": 0});
-                localDataHandler.save(sessionData.getData());
-            });
-        });
-        */
-        
+    },
+    closeTagModal: ()=>{
+        view.closeTagModal();
+    },
+    submitTag: ()=>{
+        view.addNewTag(model.addNewTag(view.extractTag()));
+        view.closeTagModal();
     },
     clearAll: function() {
         return;
@@ -387,7 +376,10 @@ const selectorToEventMap = new Map([
     [".task-creation .tag-group p", buttonEvent.toggleSelectTag],
     [".task-creation .cancel", buttonEvent.discardTask],
     [".task-creation .submit", buttonEvent.createTask],
-    ["button.close", buttonEvent.closeTask],
+    [".task-modal button.close", buttonEvent.closeTask],
+    [".tag-modal .cancel", buttonEvent.closeTagModal],
+    [".tag-modal .submit", buttonEvent.submitTag],
+    [".tag-modal button.close", buttonEvent.closeTagModal],
 ]);
 
 // map button click event to each static button
