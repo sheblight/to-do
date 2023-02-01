@@ -244,8 +244,8 @@ Set callback for all entry click events:
 
 // main
 const userData = model.getUserData();
-view.generateSideMenuTags(userData.tags);
-view.generateHomeView(userData.tasks);
+view.generateSideMenuTags(userData.tags, ()=>{});
+view.generateHomeView(userData.tasks, ()=>{});
 
 const buttonEvent = {
     goToHome: ()=>{ 

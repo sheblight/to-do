@@ -7,7 +7,7 @@ View module
 const view = (()=>{
     // cached elements
     const taskEntryListElement = domManager.query(".task-list");
-
+    const tagListElement = domManager.query("nav ul.tag-list");
     // cached selectors
     const tagListSelector = "nav ul.tag-list";
     const tagEntrySample = `${tagListSelector} li`;
@@ -27,6 +27,21 @@ const view = (()=>{
         checkmarkElement.appendChild(checkedSVG);
         return checkmarkElement;
     };
+
+    const addTagEntry = tag => {
+        const tagEntry = document.createElement("li");
+        const tagDiv = document.createElement("div");
+        const tagName = document.createElement("p");
+        const colorIcon = domManager.createSVGElement({path:"M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"});
+        tagDiv.classList.add("tag");
+        tagDiv.classList.add("icon");
+        tagName.textContent = tag.name;
+        tagDiv.appendChild(colorIcon);
+        tagDiv.appendChild(tagName);
+        tagEntry.appendChild(tagDiv);
+        tagListElement.appendChild(tagEntry);
+        return tagEntry;
+    }
 
     const addTaskEntry = task => {
         const taskEntry = document.createElement("div");
@@ -60,14 +75,18 @@ const view = (()=>{
         return p;
     }
 
-    const generateSideMenuTags = () => {
-        /* TODO */
+    const generateSideMenuTags = (tags, clickHandler) => {
+        tagListElement.replaceChildren();
+        tags.forEach(tag=>{
+            addTagEntry(tag).addEventListener("click", clickHandler);
+        });
     }
 
-    const generateHomeView = (tasks) =>  {
+    const generateHomeView = (tasks, clickHandler) =>  {
         taskEntryListElement.replaceChildren();
         tasks.forEach(task => {
-            addTaskEntry(task);     
+            addTaskEntry(task).addEventListener("click", clickHandler);
+            // add eventlistener per task
         });
     }
 
