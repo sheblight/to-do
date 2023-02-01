@@ -1,14 +1,8 @@
 import style from "./style.css";
-import sessionDataHandler from "./sessionDataHandler.js";
-import domManager from "./domManager.js";
-import localDataHandler from "./localDataHandler.js"
+import model from "./model.js";
+import view from "./view.js";
 
-// Selector constants
-const tagListSelector = "nav ul.tag-list";
-const tagEntrySample = `${tagListSelector} li`;
-const taskListSelector = ".task-list";
-const taskEntrySample = ".task-entry";
-
+/*
 // first-time users initialize with this data
 const initialData = {
     version: "0.1.0",
@@ -72,9 +66,6 @@ const loadHandler = {
         const tagEntry = domManager.addEntryOfTemplate(".task-creation .tag-group > li", ".task-creation .tag-group ul");
         tagEntry.childNodes[1].nodeValue = tag.name;
     },
-    loadTaskToModal: task => {
-        /* TODO */
-    },
 }
 
 // save methods for storing into local data
@@ -83,8 +74,6 @@ const saveHandler = {
         sessionData.pushHandler(property, value);
         console.log("Adding tag to session");
     }),
-    addTagToTask: (tag, task) => { /* TODO */},
-    addTagsToTask: (tags,task) => {/* TODO */},
     addTaskToEntry: task => sessionData.update("tasks", task, "task", (property, value) => {
         sessionData.pushHandler(property, value);
         console.log("Adding task to session");
@@ -92,10 +81,9 @@ const saveHandler = {
     //addColor: colorValue => sessionData.update("tagColor", colorValue, "color", sessionData.pushHandler),
 };
 
+
 // button events
 const buttonEvent = {
-    moveToHome: ()=>{ /* TODO */ },
-    filterByTag: ()=> { /* TODO */ },
     addTag: ()=>{
         // block request to add if input field is already active
         if (domManager.elementExists("li input")) {
@@ -165,9 +153,8 @@ const buttonEvent = {
     },
     openTask: ()=>{domManager.toggleHidden(".task-modal-wrapper")},
     closeTask: ()=>{domManager.toggleHidden(".task-modal-wrapper")},
-    toggleCheckTask: ()=>{ /* TODO */ },
-    removeTask: ()=>{ /* TODO */ }
 };
+
 const selectorToEventMap = new Map([
     [".tag-add", buttonEvent.addTag],
     ["button.data-clear", buttonEvent.clearAll],
@@ -179,7 +166,7 @@ const selectorToEventMap = new Map([
     ["button.close", buttonEvent.closeTask],
 ]);
 
-/*
+
 // PREVIOUS CONTROLLER 
 
 // load in local data, then into DOM
@@ -199,7 +186,6 @@ selectorToEventMap.forEach((value, key, map) => domManager.setClick(key, value))
 
 console.log(initData); // local data debug
 */
-
 
 /*
 [Controller Responsibilities]
@@ -254,13 +240,177 @@ Set callback for all entry click events:
     Per Checkmark on Entry:
         Request MODEL to complete (selected task).
         On success, request VIEW for completed check on the entry of (selected task)
-
-As for the button events that needs to be generated in realtime...
 */
 
+// main
+const userData = model.getUserData();
+view.generateSideMenuTags(userData.tags);
+view.generateHomeView(userData.tasks);
+
+const buttonEvent = {
+    goToHome: ()=>{ 
+        view.generateHomeView(userData.tasks);
+        console.log("Load home view.")
+    },
+    addTag: ()=>{
+        return;
+        new Promise((resolve, error)=>{
+            const tagName = view.promptNewTag();
+            if (!tagName) error();
+            else resolve(tagName); 
+        })
+        .then(tagName => {
+            const tag = model.createTag(tagName);
+            view.addNewTag(tag)
+            console.log("Disable adding tag until this is done");
+        }, ()=>{
+            /* on error code here */
+        });
+        
+        // block request to add if input field is already active
+        /*
+        if (domManager.elementExists("li input")) {
+            console.log("Cannot add tag since input is currently prompted");
+            return;
+        }
+        new Promise((resolve)=>{
+            domManager.addEntryOfTemplate(tagEntrySample, tagListSelector);
+            resolve("OK");
+        }).then((value)=>{
+            const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
+            input.addEventListener("change", ()=>{
+                const textElement = domManager.swapInputWithText(input, "nav li:last-child .tag p", true);
+                saveHandler.createTag({"name": textElement.textContent, "colorIndex": 0});
+                localDataHandler.save(sessionData.getData());
+            });
+        });
+        */
+        
+    },
+    clearAll: function() {
+        return;
+        new Promise.resolve(model.resetData())
+        .then( newData => {
+            view.generateSideMenuTags(newData.tags);
+            view.generateHomeView(newData.tasks);
+        });
+        /*
+        localDataHandler.clear();
+        sessionData.clear();
+        // clear out tags
+        const tags = domManager.queryAll("nav ul.tag-list li:not(.hidden)");
+        for (const tag of tags) {
+            tag.remove();
+        }
+        */
+    },
+    newTask: ()=>{
+        return;
+        view.openTaskCreation();
+        //domManager.toggleHidden(".task-creation");
+        //domManager.moveDown(".task-creation");
+    },
+    toggleSelectTag: ()=> {
+        return;
+        view.toggleTaskListDropdown();
+        //const tagList = domManager.query(".task-creation .tag-group ul");
+        //domManager.toggleHidden(tagList);
+    },
+    discardTask: ()=>{
+        return;
+        view.closeTaskCreation();
+        //domManager.toggleHidden(".task-creation")
+    },
+    createTask: ()=>{
+        return;
+        const task = view.getTaskInfo();
+        view.closeTaskCreation();
+        model.addTask(task);
+        const entryClick = ()=>{
+            // function that opens 
+            view.openTaskDetail();
+            const tagEntries = view.generateTaskDetail(task);
+            tagEntries.forEach(entry => view.highlight().onclick = ()=>{view.toggleAddTagToTask(entry)});
+        };
+        const checkClick = ()=> {
+            model.toggleCheckTask(task.id);
+            view.toggleCheckTask(task.id);
+        };
+        view.addTask(task, entryClick, checkClick);
+        /*
+        domManager.toggleHidden(".task-creation")
+        new Promise((resolve)=>{
+            resolve(domManager.addEntryOfTemplate(".task-entry", ".task-list"));
+        }).then((entry)=>{
+            let task = { checked: false, tags: [] };
+            const elementClasses = ["title", "description", "priority", "deadline"];
+            const count = elementClasses.length;
+            // Mapping input results to respective elements
+            for (let i = 0; i < count; i++) {
+                const input = domManager.query(`.task-creation .${elementClasses[i]}`);
+                task[elementClasses[i]] = input.value;
+                domManager.swapInputWithText(input, `.task-entry:last-child .${elementClasses[i]}`);
+            }
+            // store selected tags into task
+            const tagList = sessionData.getData().tags;
+            const tagOptions = domManager.queryAll(".task-creation .tag-group ul input");
+            for (let i = 0; i < tagList.length; i++) {
+                if (!tagOptions[i].checked) continue;
+                task.tags.push(tagList[i]);
+                // add to task display
+                const tagDisplay = domManager.addEntryOfTemplate(".task-entry:last-child .tag-group div", ".task-entry:last-child .tag-group");
+                tagDisplay.childNodes[3].textContent = tagList[i].name;
+            }
+            // save task locally
+            saveHandler.addTaskToEntry(task);
+            localDataHandler.save(sessionData.getData());
+            console.log(task);
+        });
+        */
+    },
+    updateTask: ()=> {
+        return;
+        const newTagInfo = view.getTaskDetails();
+        model.updateTag(newTagInfo.id, newTagInfo);
+        view.closeTaskDetail();
+    },
+    closeTask: ()=>{
+        return;
+        view.closeTaskDetail();
+        //domManager.toggleHidden(".task-modal-wrapper")
+    },
+    removeTask: ()=>{
+        return;
+        const id = view.getTaskDetails().id;
+        model.removeTask(id);
+        view.removeEntry(id);
+        view.closeTaskDetail();
+    }
+};
+const selectorToEventMap = new Map([
+    [".menu-time-options li:first-child", buttonEvent.goToHome],
+    [".tag-add", buttonEvent.addTag],
+    ["button.data-clear", buttonEvent.clearAll],
+    ["main button.add", buttonEvent.newTask],
+    [".task-creation .tag-group p", buttonEvent.toggleSelectTag],
+    [".task-creation .cancel", buttonEvent.discardTask],
+    [".task-creation .submit", buttonEvent.createTask],
+    ["button.close", buttonEvent.closeTask],
+]);
+
+// map button click event to each static button
+const buttonSelectors = Array.from(selectorToEventMap, entry => entry[0]);
+view.querySelected(buttonSelectors).then(buttonElements=>{
+    for (let i=0; i<buttonSelectors.length; i++) {
+        buttonElements[i].addEventListener("click", selectorToEventMap.get(buttonSelectors[i]));
+    }
+});
 
 
 
+
+
+console.log(userData); // local data debug
 
 
 /*

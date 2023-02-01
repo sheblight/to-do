@@ -9,10 +9,20 @@ const domManager = (()=>{
     const elementExists = (selector) => query(selector) != null;
     const queryIfSelector = (selector)=>{ return typeof selector == "string" ? query(selector) : selector; };
     
+    const createSVGElement = (data) => {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+        const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+        path.setAttribute("d", data.path);
+        svg.setAttribute("viewbox", "0 0 24 24");
+        svg.appendChild(path);
+        return svg;
+    };
+
     const setClick = function(elementSelector, callback) {
         const element = query(elementSelector);
         element.addEventListener("click", callback);
     };
+
     const toggleHidden = (selector) => {
         const elementClassList = queryIfSelector(selector).classList;
         if (elementClassList.contains("hidden")) {
@@ -65,6 +75,17 @@ const domManager = (()=>{
     }
     
 
-    return {query, queryAll, toggleHidden, moveDown, setClick, addEntryOfTemplate, addTemporaryInput, swapInputWithText, elementExists};
+    return {
+        query, 
+        queryAll, 
+        createSVGElement, 
+        toggleHidden, 
+        moveDown, 
+        setClick, 
+        addEntryOfTemplate, 
+        addTemporaryInput, 
+        swapInputWithText, 
+        elementExists
+    };
 })();
 export default domManager;
