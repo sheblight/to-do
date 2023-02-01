@@ -40,6 +40,15 @@ const model = (function() {
         }
         return sessionData.getData();
     }
-    return { getUserData } 
+
+    const addNewTag = (tagName) => {
+        // TODO: add tag to data operation
+        return {name: tagName, colorIndex: 0};
+    }
+
+    return { 
+        getUserData,
+        addNewTag 
+    } 
 })();
 export default model;

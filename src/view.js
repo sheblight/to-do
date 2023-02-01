@@ -14,6 +14,8 @@ const view = (()=>{
     const taskListSelector = ".task-list";
     const taskEntrySample = ".task-entry";
 
+    let tagAddDisableReason = "";
+
     // private methods
     const createCheckmarkElement = () => {
         const checkmarkElement = document.createElement("button");
@@ -69,14 +71,33 @@ const view = (()=>{
         });
     }
 
-    const promptTag = () => {
+    const promptNewTag = () => {
+        return new Promise((resolve, error)=>{
+            if (tagAddDisableReason) {
+                error(tagAddDisableReason);
+            }
+            tagAddDisableReason = "Cannot call add tag while prompted";
+            new Promise((resolveInput, errorInput)=>{
+                //const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
+                //input.addEventListener("change", resolveInput);
+                resolveInput();
+            }).then(()=>{
+                //const tagName = input.textContent;
+                //input.remove();
+                resolve("pog");
+            });
+        });
     }
+    const addNewTag = (tag) => {
+        console.log(`Added ${tag.name}`);
+    };
 
     return { 
         querySelected, 
         generateSideMenuTags, 
         generateHomeView,
-        promptTag
+        promptNewTag,
+        addNewTag
     }
     
 })();

@@ -253,18 +253,10 @@ const buttonEvent = {
         console.log("Load home view.")
     },
     addTag: ()=>{
-        return;
-        new Promise((resolve, error)=>{
-            const tagName = view.promptNewTag();
-            if (!tagName) error();
-            else resolve(tagName); 
-        })
-        .then(tagName => {
-            const tag = model.createTag(tagName);
-            view.addNewTag(tag)
-            console.log("Disable adding tag until this is done");
-        }, ()=>{
-            /* on error code here */
+        view.promptNewTag().then(tagName => {
+            view.addNewTag(model.addNewTag(tagName));
+        }, (errorMsg)=>{
+            console.warn(errorMsg);
         });
         
         // block request to add if input field is already active
@@ -405,10 +397,6 @@ view.querySelected(buttonSelectors).then(buttonElements=>{
         buttonElements[i].addEventListener("click", selectorToEventMap.get(buttonSelectors[i]));
     }
 });
-
-
-
-
 
 console.log(userData); // local data debug
 
