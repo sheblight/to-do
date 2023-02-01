@@ -90,6 +90,7 @@ const model = (function() {
 
     return { 
         getPreviousData,
+        getDataCopy,
         addNewTag,
         addNewTask,
         resetData 

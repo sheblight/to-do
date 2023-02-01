@@ -249,7 +249,7 @@ view.generateHomeView(userData.tasks, ()=>{});
 
 const buttonEvent = {
     goToHome: ()=>{ 
-        view.generateHomeView(userData.tasks);
+        view.generateHomeView(model.getDataCopy().tasks);
         console.log("Load home view.")
     },
     addTag: ()=>{
@@ -259,7 +259,7 @@ const buttonEvent = {
         view.closeTagModal();
     },
     submitTag: ()=>{
-        view.addNewTag(model.addNewTag(view.extractTag()));
+        view.addNewTag(model.addNewTag(view.extractTag()), ()=>{});
         view.closeTagModal();
     },
     clearAll: function() {
@@ -270,6 +270,7 @@ const buttonEvent = {
         });
     },
     newTask: ()=>{
+        view.loadTagsInTaskCreation(model.getDataCopy().tags);
         view.openTaskCreation();
     },
     toggleSelectTag: ()=> {
@@ -278,11 +279,11 @@ const buttonEvent = {
         //const tagList = domManager.query(".task-creation .tag-group ul");
         //domManager.toggleHidden(tagList);
     },
-    discardTask: ()=>{
+    closeTaskCreation: ()=>{
         view.closeTaskCreation();
     },
     createTask: ()=>{
-        view.addTaskEntry(model.addNewTask(view.extractTask()));
+        view.addNewTask(model.addNewTask(view.extractTask()), ()=>{});
         view.closeTaskCreation();
     },
     updateTask: ()=> {
@@ -291,7 +292,7 @@ const buttonEvent = {
         model.updateTag(newTagInfo.id, newTagInfo);
         view.closeTaskDetail();
     },
-    closeTask: ()=>{
+    closeTaskModal: ()=>{
         return;
         view.closeTaskDetail();
         //domManager.toggleHidden(".task-modal-wrapper")
@@ -310,9 +311,9 @@ const selectorToEventMap = new Map([
     ["button.data-clear", buttonEvent.clearAll],
     ["main button.add", buttonEvent.newTask],
     [".task-creation .tag-group p", buttonEvent.toggleSelectTag],
-    [".task-creation .cancel", buttonEvent.discardTask],
+    [".task-creation .cancel", buttonEvent.closeTaskCreation],
     [".task-creation .submit", buttonEvent.createTask],
-    [".task-modal button.close", buttonEvent.closeTask],
+    [".task-modal button.close", buttonEvent.closeTaskModal],
     [".tag-modal .cancel", buttonEvent.closeTagModal],
     [".tag-modal .submit", buttonEvent.submitTag],
     [".tag-modal button.close", buttonEvent.closeTagModal],

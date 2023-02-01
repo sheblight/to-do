@@ -10,13 +10,9 @@ const view = (()=>{
     const tagListElement = domManager.query("nav ul.tag-list");
     const tagModalElement = domManager.query(".tag-modal-wrapper");
     const taskCreationElement = domManager.query(".task-creation");
+    const taskDropdownElement = domManager.query(".tag-group ul");
     const taskModalElement = domManager.query(".task-modal-wrapper");
-    // cached selectors
-    const tagListSelector = "nav ul.tag-list";
-    const tagEntrySample = `${tagListSelector} li`;
-    const taskListSelector = ".task-list";
-    const taskEntrySample = ".task-entry";
-
+    
     let tagAddDisableReason = "";
 
     // private methods
@@ -31,7 +27,7 @@ const view = (()=>{
         return checkmarkElement;
     };
 
-    const addTagEntry = tag => {
+    const createTagEntry = tag => {
         const tagEntry = document.createElement("li");
         const tagDiv = document.createElement("div");
         const tagName = document.createElement("p");
@@ -42,11 +38,30 @@ const view = (()=>{
         tagDiv.appendChild(colorIcon);
         tagDiv.appendChild(tagName);
         tagEntry.appendChild(tagDiv);
-        tagListElement.appendChild(tagEntry);
         return tagEntry;
     }
 
-    
+    const createTaskEntry = task => {
+        const taskEntry = document.createElement("div");
+        taskEntry.style = "margin: 2rem;";
+        taskEntry.classList.add("task-entry");
+        taskEntry.appendChild(createCheckmarkElement());
+        // add other fields of task
+        const makeField = (type, className, style, text)=>{
+            const element = document.createElement(type);
+            element.classList.add(className);
+            element.style = style;
+            element.textContent = text;
+            return element;
+        };
+        taskEntry.appendChild(makeField("p", "title", "grid-area: 1/2/1/2; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
+        taskEntry.appendChild(makeField("p", "description", "grid-area: 2/2/2/2; margin-left: 1rem;", task.description));
+        taskEntry.appendChild(makeField("p", "deadline", "grid-area: 2/3/2/3;", task.deadline));
+        taskEntry.appendChild(makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", ""));
+        taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
+        return taskEntry;
+    }
+
 
     // public methods
     const querySelected = (selectors) => {
@@ -61,15 +76,14 @@ const view = (()=>{
     const generateSideMenuTags = (tags, clickHandler) => {
         tagListElement.replaceChildren();
         tags.forEach(tag=>{
-            addTagEntry(tag).addEventListener("click", clickHandler);
+            addNewTag(tag, clickHandler);
         });
     }
 
     const generateHomeView = (tasks, clickHandler) =>  {
         taskEntryListElement.replaceChildren();
         tasks.forEach(task => {
-            addTaskEntry(task).addEventListener("click", clickHandler);
-            // add eventlistener per task
+            addNewTask(task, clickHandler);
         });
     }
 
@@ -86,8 +100,8 @@ const view = (()=>{
         return {name: form["name"].value, color: form["color"]}
     }
 
-    const addNewTag = (tag) => {
-        addTagEntry(tag);
+    const addNewTag = (tag, clickHandler) => {
+        tagListElement.appendChild(createTagEntry(tag));
         console.log(`Added ${tag.name}`);
     };
 
@@ -106,26 +120,15 @@ const view = (()=>{
         return task;
     }
 
-    const addTaskEntry = task => {
-        const taskEntry = document.createElement("div");
-        taskEntry.style = "margin: 2rem;";
-        taskEntry.classList.add("task-entry");
-        taskEntry.appendChild(createCheckmarkElement());
-        // add other fields of task
-        const makeField = (type, className, style, text)=>{
-            const element = document.createElement(type);
-            element.classList.add(className);
-            element.style = style;
-            element.textContent = text;
-            return element;
-        };
-        taskEntry.appendChild(makeField("p", "title", "grid-area: 1/2/1/2; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
-        taskEntry.appendChild(makeField("p", "description", "grid-area: 2/2/2/2; margin-left: 1rem;", task.description));
-        taskEntry.appendChild(makeField("p", "deadline", "grid-area: 2/3/2/3;", task.deadline));
-        taskEntry.appendChild(makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", ""));
-        taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
-        taskEntryListElement.appendChild(taskEntry);
-        return taskEntry;
+    const addNewTask = (task,clickHandler) => {
+        taskEntryListElement.appendChild(createTaskEntry(task));
+        console.log(`Added ${task.title}`);
+    }
+
+    const loadTagsInTaskCreation = (tags) => {
+        // load the tags into 
+        tags.forEach(tag => {
+        });
     }
 
     return { 
@@ -139,7 +142,8 @@ const view = (()=>{
         openTaskCreation,
         closeTaskCreation,
         extractTask,
-        addTaskEntry
+        addNewTask,
+        loadTagsInTaskCreation,
     }
     
 })();
