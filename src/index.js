@@ -243,7 +243,7 @@ Set callback for all entry click events:
 */
 
 // main
-const userData = model.getUserData();
+const userData = model.getPreviousData();
 view.generateSideMenuTags(userData.tags, ()=>{});
 view.generateHomeView(userData.tasks, ()=>{});
 
@@ -411,7 +411,5 @@ Functional TODOs:
 - Task is saved to local upon creating one and updating a field
 
 Style TODOs:
-- Need to finish styling the task creation box for readability
-- Bug: Tag icon changes sizes depending on tag name length 
-
+- Fix circle icon on tags
 */

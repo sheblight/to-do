@@ -1,4 +1,3 @@
-import sessionDataHandler from "./sessionDataHandler.js";
 import localDataHandler from "./localDataHandler.js";
 /*
 
@@ -31,14 +30,16 @@ const model = (function() {
         tagColors: ["#dd4242", "#7abb46", "#3d95e2"]
     };
 
-    const getUserData = ()=>{
+    let sessionData;
+    const getDataCopy = () => JSON.parse(JSON.stringify(sessionData));
+
+    const getPreviousData = ()=>{
         console.log("Retrieving user data");
-        const sessionData = sessionDataHandler(initialData);
         if (localDataHandler.hasExistingData()) {
-            localDataHandler.updateVersion(sessionData.getData().version, "version");
-            sessionData.setData(localDataHandler.getData());
+            localDataHandler.updateVersion(initialData.version, "version");
+            sessionData = localDataHandler.getDataCopy();
         }
-        return sessionData.getData();
+        return getDataCopy();
     }
 
     const addNewTag = (tagName) => {
@@ -47,7 +48,7 @@ const model = (function() {
     }
 
     return { 
-        getUserData,
+        getPreviousData,
         addNewTag 
     } 
 })();

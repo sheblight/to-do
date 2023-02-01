@@ -5,7 +5,7 @@ Handles retrieving and saving data from local storage.
 const localDataHandler = (()=>{
     
     function hasExistingData() { return window.localStorage.data || false; }
-    function getData() { return JSON.parse(window.localStorage.data) || null; }
+    function getDataCopy() { return JSON.parse(window.localStorage.data) || null; }
 
     // Checks if local storage can be used
     function storageAvailable(type) {
@@ -36,7 +36,7 @@ const localDataHandler = (()=>{
     // Updates the stored data format to current data format
     // Save updated data format to the local storage
     const updateVersion = (currentVersion, versionProperty) => {
-        const storedVersion = getData()[versionProperty];
+        const storedVersion = getDataCopy()[versionProperty];
         if (!storedVersion) {
             console.warn("Couldn't find reference to the version on local storage");
             return;
@@ -64,7 +64,7 @@ const localDataHandler = (()=>{
         console.log("Saved data.");
     }
 
-    return {save, updateVersion, clear, hasExistingData, getData};
+    return {save, updateVersion, clear, hasExistingData, getDataCopy};
 
 })();
 
