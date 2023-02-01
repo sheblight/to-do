@@ -46,27 +46,7 @@ const view = (()=>{
         return tagEntry;
     }
 
-    const addTaskEntry = task => {
-        const taskEntry = document.createElement("div");
-        taskEntry.style = "margin: 2rem;";
-        taskEntry.classList.add("task-entry");
-        taskEntry.appendChild(createCheckmarkElement());
-        // add other fields of task
-        const makeField = (type, className, style, text)=>{
-            const element = document.createElement(type);
-            element.classList.add(className);
-            element.style = style;
-            element.textContent = text;
-            return element;
-        };
-        taskEntry.appendChild(makeField("p", "title", "grid-area: 1/2/1/2; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
-        taskEntry.appendChild(makeField("p", "description", "grid-area: 2/2/2/2; margin-left: 1rem;", task.description));
-        taskEntry.appendChild(makeField("p", "deadline", "grid-area: 2/3/2/3;", task.deadline));
-        taskEntry.appendChild(makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", ""));
-        taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
-        taskEntryListElement.appendChild(taskEntry);
-        return taskEntry;
-    }
+    
 
     // public methods
     const querySelected = (selectors) => {
@@ -117,6 +97,36 @@ const view = (()=>{
     const closeTaskCreation = ()=> {
         domManager.toggleHidden(taskCreationElement);
     }
+    const extractTask = () => {
+        const task = {checked: false};
+        const form = document.forms["newTaskForm"];
+        const fields = ["title", "description", "deadline", "priority"];
+        fields.forEach(field => task[field] = form[field].value);
+        task["tags"] = [];
+        return task;
+    }
+
+    const addTaskEntry = task => {
+        const taskEntry = document.createElement("div");
+        taskEntry.style = "margin: 2rem;";
+        taskEntry.classList.add("task-entry");
+        taskEntry.appendChild(createCheckmarkElement());
+        // add other fields of task
+        const makeField = (type, className, style, text)=>{
+            const element = document.createElement(type);
+            element.classList.add(className);
+            element.style = style;
+            element.textContent = text;
+            return element;
+        };
+        taskEntry.appendChild(makeField("p", "title", "grid-area: 1/2/1/2; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
+        taskEntry.appendChild(makeField("p", "description", "grid-area: 2/2/2/2; margin-left: 1rem;", task.description));
+        taskEntry.appendChild(makeField("p", "deadline", "grid-area: 2/3/2/3;", task.deadline));
+        taskEntry.appendChild(makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", ""));
+        taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
+        taskEntryListElement.appendChild(taskEntry);
+        return taskEntry;
+    }
 
     return { 
         querySelected, 
@@ -127,7 +137,9 @@ const view = (()=>{
         extractTag,
         addNewTag,
         openTaskCreation,
-        closeTaskCreation
+        closeTaskCreation,
+        extractTask,
+        addTaskEntry
     }
     
 })();

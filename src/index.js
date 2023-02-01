@@ -282,51 +282,8 @@ const buttonEvent = {
         view.closeTaskCreation();
     },
     createTask: ()=>{
-        return;
-        const task = view.getTaskInfo();
+        view.addTaskEntry(model.addNewTask(view.extractTask()));
         view.closeTaskCreation();
-        model.addTask(task);
-        const entryClick = ()=>{
-            // function that opens 
-            view.openTaskDetail();
-            const tagEntries = view.generateTaskDetail(task);
-            tagEntries.forEach(entry => view.highlight().onclick = ()=>{view.toggleAddTagToTask(entry)});
-        };
-        const checkClick = ()=> {
-            model.toggleCheckTask(task.id);
-            view.toggleCheckTask(task.id);
-        };
-        view.addTask(task, entryClick, checkClick);
-        /*
-        domManager.toggleHidden(".task-creation")
-        new Promise((resolve)=>{
-            resolve(domManager.addEntryOfTemplate(".task-entry", ".task-list"));
-        }).then((entry)=>{
-            let task = { checked: false, tags: [] };
-            const elementClasses = ["title", "description", "priority", "deadline"];
-            const count = elementClasses.length;
-            // Mapping input results to respective elements
-            for (let i = 0; i < count; i++) {
-                const input = domManager.query(`.task-creation .${elementClasses[i]}`);
-                task[elementClasses[i]] = input.value;
-                domManager.swapInputWithText(input, `.task-entry:last-child .${elementClasses[i]}`);
-            }
-            // store selected tags into task
-            const tagList = sessionData.getData().tags;
-            const tagOptions = domManager.queryAll(".task-creation .tag-group ul input");
-            for (let i = 0; i < tagList.length; i++) {
-                if (!tagOptions[i].checked) continue;
-                task.tags.push(tagList[i]);
-                // add to task display
-                const tagDisplay = domManager.addEntryOfTemplate(".task-entry:last-child .tag-group div", ".task-entry:last-child .tag-group");
-                tagDisplay.childNodes[3].textContent = tagList[i].name;
-            }
-            // save task locally
-            saveHandler.addTaskToEntry(task);
-            localDataHandler.save(sessionData.getData());
-            console.log(task);
-        });
-        */
     },
     updateTask: ()=> {
         return;

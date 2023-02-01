@@ -41,6 +41,7 @@ const model = (function() {
     };
 
     let sessionData;
+    let nextTagId = 0;
     const getDataCopy = () => JSON.parse(JSON.stringify(sessionData));
 
     const getPreviousData = ()=>{
@@ -65,6 +66,22 @@ const model = (function() {
         return tag;
     }
 
+    const addNewTask = (task) => {
+        if (!((task["checked"] != null) 
+        && (typeof task["title"] == "string") 
+        && (typeof task["description"] == "string") 
+        && (typeof task["deadline"] == "string") 
+        && (typeof task["priority"] == "string") 
+        && task["tags"])) {
+            console.error("Extracted invalid task format");
+            return null;
+        }
+        task["id"] = nextTagId++;
+        sessionData.tasks.push(task);
+        localDataHandler.save(sessionData);
+        return task;
+    }
+
     const resetData = () => {
         sessionData = JSON.parse(JSON.stringify(initialData));
         localDataHandler.save(sessionData);
@@ -74,6 +91,7 @@ const model = (function() {
     return { 
         getPreviousData,
         addNewTag,
+        addNewTask,
         resetData 
     } 
 })();
