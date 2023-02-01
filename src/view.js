@@ -94,23 +94,6 @@ const view = (()=>{
 
     const promptNewTag = () => {
         domManager.toggleHidden(tagModalElement);
-        return;
-        return new Promise((resolve, error)=>{
-            if (tagAddDisableReason) {
-                error(tagAddDisableReason);
-            }
-            tagAddDisableReason = "Cannot call add tag while prompted";
-            new Promise((resolveInput, errorInput)=>{
-                //const input = domManager.addTemporaryInput("nav li:last-child .tag p", "nav li:last-child .tag");
-                //input.addEventListener("change", resolveInput);
-                resolveInput();
-            }).then(()=>{
-                //const tagName = input.textContent;
-                //input.remove();
-                resolve("pog");
-                tagAddDisableReason = "";
-            });
-        });
     }
 
     const closeTagModal = () => {

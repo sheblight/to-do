@@ -15,7 +15,17 @@ const model = (function() {
                 title: "Add New Task",
                 description: "Pressing \"Add Task\" at the bottom adds a new task.",
                 deadline: "",
-                priority: 3,
+                priority: "None",
+                tags: [
+                    { name:"Work", color:"#000000" }    
+                ]
+            },
+            {
+                checked: false,
+                title: "Add New Tag",
+                description: "Pressing \"Add Tag\" on the side menu lets you add a new tag.",
+                deadline: "",
+                priority: "None",
                 tags: [
                     { name:"Work", color:"#000000" }    
                 ]
@@ -39,6 +49,9 @@ const model = (function() {
             localDataHandler.updateVersion(initialData.version, "version");
             sessionData = localDataHandler.getDataCopy();
         }
+        else {
+            sessionData = JSON.parse(JSON.stringify(initialData));
+        }
         return getDataCopy();
     }
 
@@ -52,9 +65,16 @@ const model = (function() {
         return tag;
     }
 
+    const resetData = () => {
+        sessionData = JSON.parse(JSON.stringify(initialData));
+        localDataHandler.save(sessionData);
+        return getDataCopy();
+    };
+
     return { 
         getPreviousData,
-        addNewTag 
+        addNewTag,
+        resetData 
     } 
 })();
 export default model;

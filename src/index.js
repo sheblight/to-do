@@ -254,12 +254,6 @@ const buttonEvent = {
     },
     addTag: ()=>{
         view.promptNewTag();
-        return;
-        view.promptNewTag().then(tagName => {
-            
-        }, (errorMsg)=>{
-            console.warn(errorMsg);
-        });
     },
     closeTagModal: ()=>{
         view.closeTagModal();
@@ -269,21 +263,11 @@ const buttonEvent = {
         view.closeTagModal();
     },
     clearAll: function() {
-        return;
-        new Promise.resolve(model.resetData())
+        Promise.resolve(model.resetData())
         .then( newData => {
             view.generateSideMenuTags(newData.tags);
             view.generateHomeView(newData.tasks);
         });
-        /*
-        localDataHandler.clear();
-        sessionData.clear();
-        // clear out tags
-        const tags = domManager.queryAll("nav ul.tag-list li:not(.hidden)");
-        for (const tag of tags) {
-            tag.remove();
-        }
-        */
     },
     newTask: ()=>{
         return;
