@@ -97,13 +97,15 @@ console.log(userData); // local data debug
 
 /*
 Current TODO:
-- remove selected task from entry by clicking on trash
+- Check/uncheck interaction on entry and task modal. Interaction is saved locally.
 
 Functional TODOs:
-- Check off 
+- Clicking on the task field allows you to modify the task
 - Updating a field in the task modal updates the task on the home page
 - Task is saved to local upon creating one and updating a field
 
 Style TODOs:
+- Display pencil icon on hover over field
+- Make this responsive for narrow windows
 - Fix circle icon on tags
 */

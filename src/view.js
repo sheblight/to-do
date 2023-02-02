@@ -52,10 +52,12 @@ const view = (()=>{
 
     const createTaskEntry = task => {
         const taskEntry = document.createElement("div");
+        const taskInfoDiv = document.createElement("div");
         taskEntry.dataset.id = task.id;
         taskEntry.style = "margin: 2rem;";
         taskEntry.classList.add("task-entry");
         taskEntry.appendChild(createCheckmarkElement());
+        taskInfoDiv.style = "display: grid; grid-template-columns: auto 6rem 5rem; grid-template-rows: 3rem auto auto; align-items: center;";
         // add other fields of task
         const makeField = (type, className, style, text)=>{
             const element = document.createElement(type);
@@ -64,16 +66,17 @@ const view = (()=>{
             element.textContent = text;
             return element;
         };
-        taskEntry.appendChild(makeField("p", "title", "grid-area: 1/2/1/2; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
-        taskEntry.appendChild(makeField("p", "description", "grid-area: 2/2/2/2; margin-left: 1rem;", task.description));
-        taskEntry.appendChild(makeField("p", "deadline", "grid-area: 2/3/2/3;", task.deadline));
-        const tagGroup = makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", "");
+        taskInfoDiv.appendChild(makeField("p", "title", "grid-area: 1/1/1/1; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
+        taskInfoDiv.appendChild(makeField("p", "description", "grid-area: 2/1/2/-1; margin-left: 1rem;", task.description));
+        taskInfoDiv.appendChild(makeField("p", "deadline", "grid-area: 1/2/1/2;", task.deadline));
+        taskInfoDiv.appendChild(makeField("p", "priority","grid-area: 1/3/1/3;", task.priority));
+        const tagGroup = makeField("div", "tag-group", "grid-area: 3/1/3/-1; margin-left: 1rem;", "");
         // add tags
         task.tags.forEach(tag => {
             tagGroup.appendChild(createTagEntry(tag));
         });
-        taskEntry.appendChild(tagGroup);
-        taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
+        taskInfoDiv.appendChild(tagGroup);
+        taskEntry.appendChild(taskInfoDiv);
         return taskEntry;
     }
 
@@ -107,7 +110,7 @@ const view = (()=>{
                 return;
             }
         }
-        console.log("couldn't find node with matching id");
+        console.log("Couldn't find node with matching id");
     }
 
     const generateSideMenuTags = (tags, handlerOfClickHandler) => {

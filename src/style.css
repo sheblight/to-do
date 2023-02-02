@@ -99,8 +99,16 @@ input {
     background-color: transparent;
 }
 
+.task-list-head {
+    display:flex;
+    align-items: center;
+}
+
 .divider {
     border: 2px solid var(--accent-color);
+    width: 100%;
+    height: 0;
+    margin-left: 1rem;
 }
 
 .task-creation {
@@ -119,6 +127,7 @@ input {
 
 .task-creation select, .task-creation input[type=date], .task-creation .tag-group {
     margin: 6px;
+    padding: 0;
     cursor: pointer;
     border: 2px solid var(--text-color);
     border-radius: 6px;
@@ -152,8 +161,8 @@ input {
 
 .task-entry {
     display: grid;
-    grid-template-columns: 2rem auto 5rem;
-    grid-template-rows: 2rem 2rem 2rem;
+    grid-template-columns: 2rem auto;
+    grid-template-rows: auto;
     color: var(--text-color);
 }
 
@@ -166,8 +175,9 @@ input {
 
 .tag-group {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    margin-left: 1rem;
+    padding: 1rem 0 0 0;
 }
 
 main .icon {
