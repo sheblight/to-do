@@ -99,11 +99,11 @@ const view = (()=>{
     }
 
     const openTagModal = () => {
-        domManager.toggleHidden(tagModalElement);
+        domManager.setVisible(tagModalElement);
     }
 
     const closeTagModal = () => {
-        domManager.toggleHidden(tagModalElement);
+        domManager.setVisible(tagModalElement, false);
     }
 
     const extractTag = () => {
@@ -117,10 +117,10 @@ const view = (()=>{
     };
 
     const openTaskCreation = ()=> {
-        domManager.toggleHidden(taskCreationElement);
+        domManager.setVisible(taskCreationElement);
     }
     const closeTaskCreation = ()=> {
-        domManager.toggleHidden(taskCreationElement);
+        domManager.setVisible(taskCreationElement, false);
     }
     const extractTask = () => {
         const task = {checked: false};
@@ -162,7 +162,7 @@ const view = (()=>{
     }
 
     const toggleTaskListDropdown = () => {
-        domManager.toggleHidden(taskDropdownElement);
+        domManager.setVisible(taskDropdownElement, taskDropdownElement.classList.contains("hidden"));
     }
 
     return { 

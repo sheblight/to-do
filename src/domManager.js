@@ -23,14 +23,9 @@ const domManager = (()=>{
         element.addEventListener("click", callback);
     };
 
-    const toggleHidden = (selector) => {
+    const setVisible = (selector, visible = true) => {
         const elementClassList = queryIfSelector(selector).classList;
-        if (elementClassList.contains("hidden")) {
-            elementClassList.remove("hidden");
-        }
-        else {
-            elementClassList.add("hidden");
-        }
+        visible ? elementClassList.remove("hidden") : elementClassList.add("hidden");
     }
     const moveDown = (selector)=>{
         const element = query(selector);
@@ -79,7 +74,7 @@ const domManager = (()=>{
         query, 
         queryAll, 
         createSVGElement, 
-        toggleHidden, 
+        setVisible, 
         moveDown, 
         setClick, 
         addEntryOfTemplate, 
