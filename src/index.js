@@ -4,8 +4,8 @@ import view from "./view.js";
 
 // main
 const userData = model.getPreviousData();
-view.generateSideMenuTags(userData.tags, ()=>{});
-view.generateHomeView(userData.tasks, ()=>{});
+view.generateSideMenuTags(userData.tags, (tag)=>(()=>{}));
+view.generateHomeView(userData.tasks, (task)=>(()=>{buttonEvent.openTask(task)}));
 
 const buttonEvent = {
     goToHome: ()=>{ 
@@ -19,7 +19,8 @@ const buttonEvent = {
         view.closeTagModal();
     },
     submitTag: ()=>{
-        view.addNewTag(model.addNewTag(view.extractTag()), ()=>{});
+        const tag = model.addNewTag(view.extractTag());
+        view.addNewTag(tag, ()=>{});
         view.closeTagModal();
     },
     clearAll: function() {
@@ -40,11 +41,13 @@ const buttonEvent = {
         view.closeTaskCreation();
     },
     createTask: ()=>{
-        view.addNewTask(model.addNewTask(view.extractTask()), ()=>{});
+        const task = model.addNewTask(view.extractTask());
+        view.addNewTask(model.addNewTask(task), ()=>{ buttonEvent.openTask(task) });
         view.closeTaskCreation();
     },
-    openTask: function() {
+    openTask: function(task) {
         view.openTaskModal(task);
+        view.loadTaskInModal(task);
     },
     updateTask: ()=> {
         return;

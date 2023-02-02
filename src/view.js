@@ -12,6 +12,15 @@ const view = (()=>{
     const taskCreationElement = domManager.query(".task-creation");
     const taskDropdownElement = domManager.query(".tag-group ul");
     const taskModalElement = domManager.query(".task-modal-wrapper");
+    const taskModalElements = {
+        modal: domManager.query(".task-modal"),
+        checked: domManager.query(".task-modal-wrapper .checked"),
+        title: domManager.query(".task-modal-wrapper .title"),
+        description: domManager.query(".task-modal-wrapper .description"),
+        tags: domManager.query(".task-modal-wrapper .tags"),
+        deadline: domManager.query(".task-modal-wrapper .deadline"),
+        priority: domManager.query(".task-modal-wrapper .priority"),
+    }
     
     let tagAddDisableReason = "";
 
@@ -61,12 +70,6 @@ const view = (()=>{
         // add tags
         task.tags.forEach(tag => {
             tagGroup.appendChild(createTagEntry(tag));
-            /*
-            <div class="tag icon hidden" style="font-weight: normal;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                            <p>poggins</p>
-                        </div>
-            */
         });
         taskEntry.appendChild(tagGroup);
         taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
@@ -85,26 +88,30 @@ const view = (()=>{
     }
 
     const addNewTag = (tag, clickHandler) => {
-        tagListElement.appendChild(createTagEntry(tag));
+        const tagElement = createTagEntry(tag);
+        tagListElement.appendChild(tagElement);
+        tagElement.addEventListener("click", clickHandler);
         console.log(`Added ${tag.name}`);
     };
 
     const addNewTask = (task,clickHandler) => {
-        taskEntryListElement.appendChild(createTaskEntry(task));
+        const taskElement = createTaskEntry(task);
+        taskEntryListElement.appendChild(taskElement);
+        taskElement.addEventListener("click", clickHandler);
         console.log(`Added ${task.title}`);
     }
 
-    const generateSideMenuTags = (tags, clickHandler) => {
+    const generateSideMenuTags = (tags, handlerOfClickHandler) => {
         tagListElement.replaceChildren();
         tags.forEach(tag=>{
-            addNewTag(tag, clickHandler);
+            addNewTag(tag, handlerOfClickHandler(tag));
         });
     }
 
-    const generateHomeView = (tasks, clickHandler) =>  {
+    const generateHomeView = (tasks, handlerOfClickHandler) =>  {
         taskEntryListElement.replaceChildren();
         tasks.forEach(task => {
-            addNewTask(task, clickHandler);
+            addNewTask(task, handlerOfClickHandler(task));
         });
     }
 
@@ -126,6 +133,28 @@ const view = (()=>{
             listItem.appendChild(text);
             taskDropdownElement.append(listItem);
         });
+    }
+
+    const loadTaskInModal = (task) => {
+        // hide the modal itself while loading
+        domManager.setVisible(taskModalElements.modal, false);
+        taskModalElements.tags.replaceChildren();
+
+        // set text fields
+        for (const field in task) {
+            if (field == "id" || field == "tags" || field == "checked") continue;
+            taskModalElements[field].textContent = task[field];
+        }
+        // set check icon
+        domManager.setVisible(taskModalElements.checked.children[0], !task.checked);
+        domManager.setVisible(taskModalElements.checked.children[1], task.checked);
+        // set tags
+        task.tags.forEach(tag => {
+            taskModalElements.tags.appendChild(createTagEntry(tag));
+        });
+
+        // display the modal once loaded
+        domManager.setVisible(taskModalElements.modal);
     }
 
     const extractTag = () => {
@@ -183,6 +212,7 @@ const view = (()=>{
         extractTask,
         addNewTask,
         loadTagsInTaskCreation,
+        loadTaskInModal,
         toggleTaskListDropdown,
         openTagModal,
         closeTagModal,
