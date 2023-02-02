@@ -273,11 +273,8 @@ const buttonEvent = {
         view.loadTagsInTaskCreation(model.getDataCopy().tags);
         view.openTaskCreation();
     },
-    toggleSelectTag: ()=> {
-        return;
+    toggleSelectTag: () => {
         view.toggleTaskListDropdown();
-        //const tagList = domManager.query(".task-creation .tag-group ul");
-        //domManager.toggleHidden(tagList);
     },
     closeTaskCreation: ()=>{
         view.closeTaskCreation();

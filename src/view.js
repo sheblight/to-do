@@ -57,7 +57,18 @@ const view = (()=>{
         taskEntry.appendChild(makeField("p", "title", "grid-area: 1/2/1/2; margin-left: 1rem; font-size: 1.5rem; font-weight: 600;", task.title));
         taskEntry.appendChild(makeField("p", "description", "grid-area: 2/2/2/2; margin-left: 1rem;", task.description));
         taskEntry.appendChild(makeField("p", "deadline", "grid-area: 2/3/2/3;", task.deadline));
-        taskEntry.appendChild(makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", ""));
+        const tagGroup = makeField("div", "tag-group", "grid-area: 3/2/3/2; margin-left: 1rem;", "");
+        // add tags
+        task.tags.forEach(tag => {
+            tagGroup.appendChild(createTagEntry(tag));
+            /*
+            <div class="tag icon hidden" style="font-weight: normal;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                            <p>poggins</p>
+                        </div>
+            */
+        });
+        taskEntry.appendChild(tagGroup);
         taskEntry.appendChild(makeField("p", "priority","grid-area: 3/3/3/3;", task.priority));
         return taskEntry;
     }
@@ -116,7 +127,12 @@ const view = (()=>{
         const form = document.forms["newTaskForm"];
         const fields = ["title", "description", "deadline", "priority"];
         fields.forEach(field => task[field] = form[field].value);
-        task["tags"] = [];
+        domManager.queryAll(".task-group")
+        task.tags = [];
+        for (const node of taskDropdownElement.children) {
+            if (node.children[0].checked) task.tags.push({name: node.dataset.name, color: node.dataset.color});
+        }
+        console.log(task);
         return task;
     }
 
@@ -126,10 +142,27 @@ const view = (()=>{
     }
 
     const loadTagsInTaskCreation = (tags) => {
-        // load the tags into 
+        taskDropdownElement.replaceChildren();
         tags.forEach(tag => {
-            
+            // create element
+            const listItem = document.createElement("li");
+            const input = document.createElement("input");
+            const text = document.createElement("p");
+            listItem.classList.add("tag-item");
+            // store tag data in dataset
+            listItem.dataset.name = tag.name;
+            listItem.dataset.color = tag.color;
+            input.type = "checkbox";
+            input.name = tag.name;
+            text.textContent = tag.name;
+            listItem.appendChild(input);
+            listItem.appendChild(text);
+            taskDropdownElement.append(listItem);
         });
+    }
+
+    const toggleTaskListDropdown = () => {
+        domManager.toggleHidden(taskDropdownElement);
     }
 
     return { 
@@ -145,6 +178,7 @@ const view = (()=>{
         extractTask,
         addNewTask,
         loadTagsInTaskCreation,
+        toggleTaskListDropdown
     }
     
 })();
