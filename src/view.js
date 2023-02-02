@@ -128,6 +128,7 @@ const view = (()=>{
     const loadTagsInTaskCreation = (tags) => {
         // load the tags into 
         tags.forEach(tag => {
+            
         });
     }
 

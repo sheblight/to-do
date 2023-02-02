@@ -4,6 +4,8 @@ module.exports = {
     mode: 'production',
     entry: {
         index:'./src/index.js',
+        view: './src/view.js',
+        model: './src/model.js',
         domManager: './src/domManager.js',
         localDataHandler: './src/localDataHandler.js',
         sessionDataHandler: './src/sessionDataHandler.js',
