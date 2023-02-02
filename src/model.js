@@ -11,6 +11,7 @@ const model = (function() {
         user: "Guest",
         tasks: [
             {
+                id: 0,
                 checked: false,
                 title: "Add New Task",
                 description: "Pressing \"Add Task\" at the bottom adds a new task.",
@@ -21,6 +22,7 @@ const model = (function() {
                 ]
             },
             {
+                id: 1,
                 checked: false,
                 title: "Add New Tag",
                 description: "Pressing \"Add Tag\" on the side menu lets you add a new tag.",
@@ -41,7 +43,8 @@ const model = (function() {
     };
 
     let sessionData;
-    let nextTagId = 0;
+    const getNextTaskId = () => !sessionData.tasks ? 0 : sessionData.tasks[sessionData.tasks.length-1].id + 1;
+    const getTaskById = (id) => getDataCopy().tasks.find(task => task.id == id);
     const getDataCopy = () => JSON.parse(JSON.stringify(sessionData));
 
     const getPreviousData = ()=>{
@@ -67,7 +70,8 @@ const model = (function() {
     }
 
     const addNewTask = (task) => {
-        if (!((task["checked"] != null) 
+        if (!((typeof task["id"] == "number") 
+        && (task["checked"] != null) 
         && (typeof task["title"] == "string") 
         && (typeof task["description"] == "string") 
         && (typeof task["deadline"] == "string") 
@@ -76,7 +80,7 @@ const model = (function() {
             console.error("Extracted invalid task format");
             return null;
         }
-        task["id"] = nextTagId++;
+        task["id"] = getNextTaskId();
         sessionData.tasks.push(task);
         localDataHandler.save(sessionData);
         return task;
@@ -91,6 +95,7 @@ const model = (function() {
     return { 
         getPreviousData,
         getDataCopy,
+        getTaskById,
         addNewTag,
         addNewTask,
         resetData 

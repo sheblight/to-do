@@ -91,14 +91,12 @@ const view = (()=>{
         const tagElement = createTagEntry(tag);
         tagListElement.appendChild(tagElement);
         tagElement.addEventListener("click", clickHandler);
-        console.log(`Added ${tag.name}`);
     };
 
     const addNewTask = (task,clickHandler) => {
         const taskElement = createTaskEntry(task);
         taskEntryListElement.appendChild(taskElement);
         taskElement.addEventListener("click", clickHandler);
-        console.log(`Added ${task.title}`);
     }
 
     const generateSideMenuTags = (tags, handlerOfClickHandler) => {
@@ -163,7 +161,7 @@ const view = (()=>{
     }
 
     const extractTask = () => {
-        const task = {checked: false};
+        const task = {id: 0, checked: false};
         const form = document.forms["newTaskForm"];
         const fields = ["title", "description", "deadline", "priority"];
         fields.forEach(field => task[field] = form[field].value);
@@ -172,7 +170,6 @@ const view = (()=>{
         for (const node of taskDropdownElement.children) {
             if (node.children[0].checked) task.tags.push({name: node.dataset.name, color: node.dataset.color});
         }
-        console.log(task);
         return task;
     }
 

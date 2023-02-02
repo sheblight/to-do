@@ -4,12 +4,15 @@ import view from "./view.js";
 
 // main
 const userData = model.getPreviousData();
-view.generateSideMenuTags(userData.tags, (tag)=>(()=>{}));
-view.generateHomeView(userData.tasks, (task)=>(()=>{buttonEvent.openTask(task)}));
+const tagEntryHandler = (tag) => (()=>{});
+const taskEntryHandler = (task)=>(()=>{buttonEvent.openTask(task)});
+
+view.generateSideMenuTags(userData.tags, tagEntryHandler);
+view.generateHomeView(userData.tasks, taskEntryHandler);
 
 const buttonEvent = {
     goToHome: ()=>{ 
-        view.generateHomeView(model.getDataCopy().tasks);
+        view.generateHomeView(model.getDataCopy().tasks, taskEntryHandler);
         console.log("Load home view.")
     },
     addTag: ()=>{
@@ -26,8 +29,8 @@ const buttonEvent = {
     clearAll: function() {
         Promise.resolve(model.resetData())
         .then( newData => {
-            view.generateSideMenuTags(newData.tags);
-            view.generateHomeView(newData.tasks);
+            view.generateSideMenuTags(newData.tags, tagEntryHandler);
+            view.generateHomeView(newData.tasks, taskEntryHandler);
         });
     },
     newTask: ()=>{
@@ -42,7 +45,7 @@ const buttonEvent = {
     },
     createTask: ()=>{
         const task = model.addNewTask(view.extractTask());
-        view.addNewTask(model.addNewTask(task), ()=>{ buttonEvent.openTask(task) });
+        view.addNewTask(task, taskEntryHandler(task));
         view.closeTaskCreation();
     },
     openTask: function(task) {
