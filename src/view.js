@@ -84,6 +84,16 @@ const view = (()=>{
         return p;
     }
 
+    const addNewTag = (tag, clickHandler) => {
+        tagListElement.appendChild(createTagEntry(tag));
+        console.log(`Added ${tag.name}`);
+    };
+
+    const addNewTask = (task,clickHandler) => {
+        taskEntryListElement.appendChild(createTaskEntry(task));
+        console.log(`Added ${task.title}`);
+    }
+
     const generateSideMenuTags = (tags, clickHandler) => {
         tagListElement.replaceChildren();
         tags.forEach(tag=>{
@@ -96,49 +106,6 @@ const view = (()=>{
         tasks.forEach(task => {
             addNewTask(task, clickHandler);
         });
-    }
-
-    const openTagModal = () => {
-        domManager.setVisible(tagModalElement);
-    }
-
-    const closeTagModal = () => {
-        domManager.setVisible(tagModalElement, false);
-    }
-
-    const extractTag = () => {
-        const form = document.forms["newTagForm"];
-        return {name: form["name"].value, color: form["color"]}
-    }
-
-    const addNewTag = (tag, clickHandler) => {
-        tagListElement.appendChild(createTagEntry(tag));
-        console.log(`Added ${tag.name}`);
-    };
-
-    const openTaskCreation = ()=> {
-        domManager.setVisible(taskCreationElement);
-    }
-    const closeTaskCreation = ()=> {
-        domManager.setVisible(taskCreationElement, false);
-    }
-    const extractTask = () => {
-        const task = {checked: false};
-        const form = document.forms["newTaskForm"];
-        const fields = ["title", "description", "deadline", "priority"];
-        fields.forEach(field => task[field] = form[field].value);
-        domManager.queryAll(".task-group")
-        task.tags = [];
-        for (const node of taskDropdownElement.children) {
-            if (node.children[0].checked) task.tags.push({name: node.dataset.name, color: node.dataset.color});
-        }
-        console.log(task);
-        return task;
-    }
-
-    const addNewTask = (task,clickHandler) => {
-        taskEntryListElement.appendChild(createTaskEntry(task));
-        console.log(`Added ${task.title}`);
     }
 
     const loadTagsInTaskCreation = (tags) => {
@@ -161,24 +128,68 @@ const view = (()=>{
         });
     }
 
+    const extractTag = () => {
+        const form = document.forms["newTagForm"];
+        return {name: form["name"].value, color: form["color"]}
+    }
+
+    const extractTask = () => {
+        const task = {checked: false};
+        const form = document.forms["newTaskForm"];
+        const fields = ["title", "description", "deadline", "priority"];
+        fields.forEach(field => task[field] = form[field].value);
+        domManager.queryAll(".task-group")
+        task.tags = [];
+        for (const node of taskDropdownElement.children) {
+            if (node.children[0].checked) task.tags.push({name: node.dataset.name, color: node.dataset.color});
+        }
+        console.log(task);
+        return task;
+    }
+
+    const openTagModal = () => {
+        domManager.setVisible(tagModalElement);
+    }
+
+    const closeTagModal = () => {
+        domManager.setVisible(tagModalElement, false);
+    }
+
+    const openTaskCreation = ()=> {
+        domManager.setVisible(taskCreationElement);
+    }
+    const closeTaskCreation = ()=> {
+        domManager.setVisible(taskCreationElement, false);
+    }
+
     const toggleTaskListDropdown = () => {
         domManager.setVisible(taskDropdownElement, taskDropdownElement.classList.contains("hidden"));
+    }
+
+    const openTaskModal = () => {
+        domManager.setVisible(taskModalElement);
+    }
+
+    const closeTaskModal = () => {
+        domManager.setVisible(taskModalElement, false);
     }
 
     return { 
         querySelected, 
         generateSideMenuTags, 
         generateHomeView,
-        openTagModal,
-        closeTagModal,
         extractTag,
         addNewTag,
-        openTaskCreation,
-        closeTaskCreation,
         extractTask,
         addNewTask,
         loadTagsInTaskCreation,
-        toggleTaskListDropdown
+        toggleTaskListDropdown,
+        openTagModal,
+        closeTagModal,
+        openTaskCreation,
+        closeTaskCreation,
+        openTaskModal,
+        closeTaskModal
     }
     
 })();
