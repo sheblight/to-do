@@ -7,7 +7,7 @@ Model module
 */
 const model = (function() {
     var initialData = {
-        version: "0.1.0",
+        version: "0.2.0",
         user: "Guest",
         tasks: [
             {
@@ -46,17 +46,31 @@ const model = (function() {
     const getNextTaskId = () => !sessionData.tasks ? 0 : sessionData.tasks[sessionData.tasks.length-1].id + 1;
     const getTaskById = (id) => getDataCopy().tasks.find(task => task.id == id);
     const getDataCopy = () => JSON.parse(JSON.stringify(sessionData));
+    const getDefaultDataCopy = () => JSON.parse(JSON.stringify(initialData));
 
-    const getPreviousData = ()=>{
-        console.log("Retrieving user data");
-        if (localDataHandler.hasExistingData()) {
-            localDataHandler.updateVersion(initialData.version, "version");
-            sessionData = localDataHandler.getDataCopy();
+    const retrieveAndUpdate = (previousData) => {
+        if (previousData.version == initialData.version) {
+            console.log(`Using most updated version ${initialData.version}`)
+            sessionData = previousData;
+        }
+        else if (initialData.version[0] == "1") {
+            // if public, handle update to data based on the transitions from the previous version to new
+            sessionData = previousData;
+            // update new changes to the model here
+            sessionData.version = initialData.version;
+            console.log(`Updated to latest version ${initialData.version}`)
         }
         else {
+            // while in beta version, reset data to default whenever there's an update
             sessionData = JSON.parse(JSON.stringify(initialData));
+            console.log(`Reseting data due to new update. Updated to version ${initialData.version}`);          
         }
         return getDataCopy();
+    }
+
+    const loadUserData = ()=>{
+        console.log("Retrieving user data");
+        return localDataHandler.hasExistingData() ? retrieveAndUpdate(localDataHandler.getDataCopy()) : getDefaultDataCopy();
     }
 
     const addNewTag = (tag) => {
@@ -93,7 +107,7 @@ const model = (function() {
     };
 
     return { 
-        getPreviousData,
+        loadUserData,
         getDataCopy,
         getTaskById,
         addNewTag,

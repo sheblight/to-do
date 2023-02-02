@@ -33,21 +33,6 @@ const localDataHandler = (()=>{
         }
     }
 
-    // Updates the stored data format to current data format
-    // Save updated data format to the local storage
-    const updateVersion = (currentVersion, versionProperty) => {
-        const storedVersion = getDataCopy()[versionProperty];
-        if (!storedVersion) {
-            console.warn("Couldn't find reference to the version on local storage");
-            return;
-        }
-        else if (currentVersion == storedVersion) {
-            console.log(`Version is up to date. ${currentVersion}`);
-            return;
-        }
-        // Convert any old data format to new format here
-    }
-
     // Reset data session and locally
     const clear = () => {
         window.localStorage.clear();
@@ -64,7 +49,7 @@ const localDataHandler = (()=>{
         console.log("Saved data.");
     }
 
-    return {save, updateVersion, clear, hasExistingData, getDataCopy};
+    return {save, clear, hasExistingData, getDataCopy};
 
 })();
 

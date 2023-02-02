@@ -3,7 +3,7 @@ import model from "./model.js";
 import view from "./view.js";
 
 // main
-const userData = model.getPreviousData();
+const userData = model.loadUserData();
 const tagEntryHandler = (tag) => (()=>{});
 const taskEntryHandler = (task)=>(()=>{buttonEvent.openTask(task)});
 
