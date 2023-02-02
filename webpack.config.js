@@ -10,10 +10,7 @@ module.exports = {
         localDataHandler: './src/localDataHandler.js',
         sessionDataHandler: './src/sessionDataHandler.js',
     },
-    devtool: 'inline-source-map',
-    devServer: {
-        static: './dist',
-    },
+    //devtool: 'inline-source-map',
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
