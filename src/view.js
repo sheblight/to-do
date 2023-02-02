@@ -52,6 +52,7 @@ const view = (()=>{
 
     const createTaskEntry = task => {
         const taskEntry = document.createElement("div");
+        taskEntry.dataset.id = task.id;
         taskEntry.style = "margin: 2rem;";
         taskEntry.classList.add("task-entry");
         taskEntry.appendChild(createCheckmarkElement());
@@ -99,6 +100,16 @@ const view = (()=>{
         taskElement.addEventListener("click", clickHandler);
     }
 
+    const removeTask = (id) => {
+        for (const node of taskEntryListElement.children) {
+            if (node.dataset.id == id) {
+                node.remove();
+                return;
+            }
+        }
+        console.log("couldn't find node with matching id");
+    }
+
     const generateSideMenuTags = (tags, handlerOfClickHandler) => {
         tagListElement.replaceChildren();
         tags.forEach(tag=>{
@@ -137,7 +148,7 @@ const view = (()=>{
         // hide the modal itself while loading
         domManager.setVisible(taskModalElements.modal, false);
         taskModalElements.tags.replaceChildren();
-
+        taskModalElements.modal.dataset.id = task.id;
         // set text fields
         for (const field in task) {
             if (field == "id" || field == "tags" || field == "checked") continue;
@@ -160,7 +171,7 @@ const view = (()=>{
         return {name: form["name"].value, color: form["color"]}
     }
 
-    const extractTask = () => {
+    const extractTaskFromCreation = () => {
         const task = {id: 0, checked: false};
         const form = document.forms["newTaskForm"];
         const fields = ["title", "description", "deadline", "priority"];
@@ -172,6 +183,8 @@ const view = (()=>{
         }
         return task;
     }
+
+    const extractIdOfCurrentTask = () => taskModalElements.modal.dataset.id;
 
     const openTagModal = () => {
         domManager.setVisible(tagModalElement);
@@ -202,12 +215,14 @@ const view = (()=>{
 
     return { 
         querySelected, 
+        addNewTag,
+        addNewTask,
+        removeTask,
         generateSideMenuTags, 
         generateHomeView,
         extractTag,
-        addNewTag,
-        extractTask,
-        addNewTask,
+        extractIdOfCurrentTask,
+        extractTaskFromCreation,
         loadTagsInTaskCreation,
         loadTaskInModal,
         toggleTaskListDropdown,

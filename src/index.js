@@ -44,7 +44,7 @@ const buttonEvent = {
         view.closeTaskCreation();
     },
     createTask: ()=>{
-        const task = model.addNewTask(view.extractTask());
+        const task = model.addNewTask(view.extractTaskFromCreation());
         view.addNewTask(task, taskEntryHandler(task));
         view.closeTaskCreation();
     },
@@ -62,11 +62,11 @@ const buttonEvent = {
         view.closeTaskModal();
     },
     removeTask: ()=>{
-        return;
-        const id = view.getTaskDetails().id;
+        const id = view.extractIdOfCurrentTask();
         model.removeTask(id);
-        view.removeEntry(id);
+        view.removeTask(id);
         view.closeTaskModal();
+        console.log(model.getDataCopy());
     }
 };
 const selectorToEventMap = new Map([
@@ -78,6 +78,7 @@ const selectorToEventMap = new Map([
     [".task-creation .cancel", buttonEvent.closeTaskCreation],
     [".task-creation .submit", buttonEvent.createTask],
     [".task-modal button.close", buttonEvent.closeTask],
+    [".task-modal .remove", buttonEvent.removeTask],
     [".tag-modal .cancel", buttonEvent.closeTagModal],
     [".tag-modal .submit", buttonEvent.submitTag],
     [".tag-modal button.close", buttonEvent.closeTagModal],
@@ -96,10 +97,10 @@ console.log(userData); // local data debug
 
 /*
 Current TODO:
-- Switch to MVC design
+- remove selected task from entry by clicking on trash
 
 Functional TODOs:
-- Clicking on respective task opens task modal containing respective information
+- Check off 
 - Updating a field in the task modal updates the task on the home page
 - Task is saved to local upon creating one and updating a field
 

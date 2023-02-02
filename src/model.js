@@ -65,6 +65,7 @@ const model = (function() {
             sessionData = JSON.parse(JSON.stringify(initialData));
             console.log(`Reseting data due to new update. Updated to version ${initialData.version}`);          
         }
+        localDataHandler.save(sessionData);
         return getDataCopy();
     }
 
@@ -100,6 +101,18 @@ const model = (function() {
         return task;
     }
 
+    const removeTask = (id) => {
+        const task = sessionData.tasks.find(task => task.id == id);
+        const index = sessionData.tasks.indexOf(task);
+        if (index < 0) {
+            console.warn(`Could not find task of id ${id}`);
+            return;
+        }
+        sessionData.tasks.splice(index, 1);
+        localDataHandler.save(sessionData);
+        console.log(`Removed task entry id ${id}`);
+    }
+
     const resetData = () => {
         sessionData = JSON.parse(JSON.stringify(initialData));
         localDataHandler.save(sessionData);
@@ -112,6 +125,7 @@ const model = (function() {
         getTaskById,
         addNewTag,
         addNewTask,
+        removeTask,
         resetData 
     } 
 })();
