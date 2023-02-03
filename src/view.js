@@ -205,13 +205,17 @@ const view = (()=>{
 
     const extractIdOfCurrentTask = () => taskModalElements.modal.dataset.id;
 
-    const checkOffTask = (id, checked) => {
+    const checkOffTaskEntry = (id, checked) => {
         const node = getTaskEntry(id)
         if (!node) {
             console.warn("Couldn't find node with matching id");
             return;
         }
         swapCheckmarkDisplay(node.childNodes[0], checked);
+    }
+
+    const checkOffTaskModal = (node, checked) => {
+        swapCheckmarkDisplay(node, checked);
     }
 
     const openTagModal = () => {
@@ -251,7 +255,8 @@ const view = (()=>{
         extractTag,
         extractIdOfCurrentTask,
         extractTaskFromCreation,
-        checkOffTask,
+        checkOffTaskEntry,
+        checkOffTaskModal,
         loadTagsInTaskCreation,
         loadTaskInModal,
         toggleTaskListDropdown,

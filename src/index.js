@@ -9,7 +9,7 @@ const userData = model.loadUserData();
 const tagEntryHandler = (tag) => (()=>{});
 const taskEntryHandler = (id)=>(()=>{buttonEvent.openTask(model.getTaskById(id))});
 const taskCheckHandler = (task)=>(()=>{
-    view.checkOffTask(task.id, model.toggleCheckOffTask(task.id));
+    view.checkOffTaskEntry(task.id, model.toggleCheckOffTask(task.id));
 })
 
 view.generateSideMenuTags(userData.tags, tagEntryHandler);
@@ -57,6 +57,12 @@ const buttonEvent = {
         view.openTaskModal(task);
         view.loadTaskInModal(task);
     },
+    checkOffTaskModal: function() {
+        const id = view.extractIdOfCurrentTask();
+        const checked = model.toggleCheckOffTask(id);
+        view.checkOffTaskEntry(id, checked);
+        view.checkOffTaskModal(this, checked);
+    },
     updateTask: ()=> {
         return;
         const newTagInfo = view.getTaskDetails();
@@ -83,6 +89,7 @@ const selectorToEventMap = new Map([
     [".task-creation .cancel", buttonEvent.closeTaskCreation],
     [".task-creation .submit", buttonEvent.createTask],
     [".task-modal button.close", buttonEvent.closeTask],
+    [".task-modal .checked", buttonEvent.checkOffTaskModal],
     [".task-modal .remove", buttonEvent.removeTask],
     [".tag-modal .cancel", buttonEvent.closeTagModal],
     [".tag-modal .submit", buttonEvent.submitTag],
@@ -102,15 +109,16 @@ console.log(userData); // local data debug
 
 /*
 Current TODO:
-- Check/uncheck interaction on entry and task modal. Interaction is saved locally.
+- Display pencil icon on hover over different fields
 
 Functional TODOs:
 - Clicking on the task field allows you to modify the task
 - Updating a field in the task modal updates the task on the home page
 - Task is saved to local upon creating one and updating a field
+- Add invalidation if tag name field is blank
 
 Style TODOs:
-- Display pencil icon on hover over field
+
 - Make this responsive for narrow windows
 - Fix circle icon on tags
 */
