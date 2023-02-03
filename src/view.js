@@ -172,7 +172,12 @@ const view = (()=>{
         // set text fields
         for (const field in task) {
             if (field == "id" || field == "tags" || field == "checked") continue;
-            taskModalElements[field].textContent = task[field];
+            else if (field == "description") {
+                taskModalElements[field].value = task[field];    
+            }
+            else {
+                taskModalElements[field].textContent = task[field];
+            }
         }
         // set check icon
         swapCheckmarkDisplay(taskModalElements.checked, task.checked);

@@ -88,12 +88,14 @@ const selectorToEventMap = new Map([
     [".task-creation .tag-group p", buttonEvent.toggleSelectTag],
     [".task-creation .cancel", buttonEvent.closeTaskCreation],
     [".task-creation .submit", buttonEvent.createTask],
+    [".task-modal-wrapper", ()=>{console.log("remove task")}],
     [".task-modal button.close", buttonEvent.closeTask],
     [".task-modal .checked", buttonEvent.checkOffTaskModal],
     [".task-modal .remove", buttonEvent.removeTask],
     [".tag-modal .cancel", buttonEvent.closeTagModal],
     [".tag-modal .submit", buttonEvent.submitTag],
     [".tag-modal button.close", buttonEvent.closeTagModal],
+    
 ]);
 
 // map button click event to each static button
@@ -106,19 +108,21 @@ view.querySelected(buttonSelectors).then(buttonElements=>{
 
 console.log(userData); // local data debug
 
-
 /*
 Current TODO:
-- Display pencil icon on hover over different fields
+- Display pencil icon on hover over title, description 
 
 Functional TODOs:
-- Clicking on the task field allows you to modify the task
-- Updating a field in the task modal updates the task on the home page
-- Task is saved to local upon creating one and updating a field
+- Save title and description locally when modified
+- Add buttons for modifying the deadline and priority which saves locally
+- Add button at the end of tag group to open a tag dropdown that lets you add/remove tags there
+- Pressing the tag in side menu regenerates with the completed tags
 - Add invalidation if tag name field is blank
 
 Style TODOs:
-
+- Surround deadline, priority, and tag group with border so it looks pressable
+- Style tag modal
 - Make this responsive for narrow windows
+- Change add task/add tag button to floating circles
 - Fix circle icon on tags
 */
