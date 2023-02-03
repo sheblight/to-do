@@ -140,7 +140,7 @@ const view = (()=>{
     const generateHomeView = (tasks, handlerOfClickHandler, handlerOfCheckHandler) =>  {
         taskEntryListElement.replaceChildren();
         tasks.forEach(task => {
-            addNewTask(task, handlerOfClickHandler(task), handlerOfCheckHandler(task));
+            addNewTask(task, handlerOfClickHandler(task.id), handlerOfCheckHandler(task));
         });
     }
 

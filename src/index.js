@@ -7,7 +7,7 @@ const userData = model.loadUserData();
 
 // dynamic click events
 const tagEntryHandler = (tag) => (()=>{});
-const taskEntryHandler = (task)=>(()=>{buttonEvent.openTask(task)});
+const taskEntryHandler = (id)=>(()=>{buttonEvent.openTask(model.getTaskById(id))});
 const taskCheckHandler = (task)=>(()=>{
     view.checkOffTask(task.id, model.toggleCheckOffTask(task.id));
 })
