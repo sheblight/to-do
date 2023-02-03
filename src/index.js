@@ -50,11 +50,11 @@ const buttonEvent = {
     },
     createTask: ()=>{
         const task = model.addNewTask(view.extractTaskFromCreation());
-        view.addNewTask(task, taskEntryHandler(task), taskCheckHandler(task));
+        view.addNewTask(task, taskEntryHandler(task.id), taskCheckHandler(task));
         view.closeTaskCreation();
     },
     openTask: function(task) {
-        view.openTaskModal(task);
+        view.openTaskModal();
         view.loadTaskInModal(task);
     },
     checkOffTaskModal: function() {

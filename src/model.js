@@ -43,8 +43,8 @@ const model = (function() {
     };
 
     let sessionData;
-    const getNextTaskId = () => !sessionData.tasks ? 0 : sessionData.tasks[sessionData.tasks.length-1].id + 1;
-    const getTaskById = (id) => getDataCopy().tasks.find(task => task.id == id);
+    const getNextTaskId = () => sessionData.tasks.length == 0 ? 0 : sessionData.tasks[sessionData.tasks.length-1].id + 1;
+    const getTaskById = (id) => sessionData.tasks.find(task => task.id == id);
     const getDataCopy = () => JSON.parse(JSON.stringify(sessionData));
     const getDefaultDataCopy = () => JSON.parse(JSON.stringify(initialData));
     const saveToLocal = () => localDataHandler.save(sessionData);

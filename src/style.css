@@ -201,7 +201,7 @@ main .icon {
 .task-modal, .tag-modal {
     position: inherit;
     --modal-width: 300px;
-    --modal-height: 300px;
+    --modal-height: 400px;
     width: var(--modal-width);
     height: var(--modal-height);
     bottom: calc(50% - var(--modal-height)/2);
@@ -219,7 +219,14 @@ main .icon {
     padding: 0;
 }
 
-.task-modal input, .task-modal textarea {
+.task-modal input, .task-modal textarea, .task-modal .checked, .task-modal .remove {
+    border: none;
     background-color: transparent;
+}
+
+.task-modal .remove:hover {
+    fill: var(--text-color);
+    background-color: #9f1d1d;
+    border-radius: 4px;
 }
 

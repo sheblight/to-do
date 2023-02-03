@@ -111,7 +111,16 @@
     </main>
     <div class="init-modal hidden"></div>
     <div class="task-modal-wrapper hidden">
-        <div class="task-modal" data-id="-1">
+        <div class="task-modal" data-id="-1" style="display: grid;
+        grid-template-rows: 2rem 3rem minmax(1rem,4rem) 1rem auto 2rem;
+        gap: 1rem;
+        justify-items: start;">
+            <button class="close">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <title>Back</title>
+                    <path d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
+                </svg>
+            </button>
             <button class="checked">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>radiobox-blank</title>
@@ -122,20 +131,16 @@
                     <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z" />
                 </svg>
             </button>
-            <button class="close">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <title>Back</title>
-                    <path d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
-                </svg>
-            </button>
             <!-- Content editable-->
             <h1 contenteditable="true" class="title">task Title</h1>
             <p contenteditable="true" class="description">Description here.</p>
-            <p class="deadline">Deadline: 01/01/2023</p>
-            <p class="priority">Priority: High</p>
+            <div style="display:flex;">
+                <p class="deadline">Deadline: 01/01/2023</p>
+                <p class="priority">Priority: High</p>
+            </div>
             <div class="tags">
             </div>
-            <button class="remove">
+            <button class="remove" style="justify-self:flex-end;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <title>Remove Task</title>
                     <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z" />
