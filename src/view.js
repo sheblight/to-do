@@ -53,10 +53,12 @@ const view = (()=>{
     const createTaskEntry = task => {
         const taskEntry = document.createElement("div");
         const taskInfoDiv = document.createElement("div");
+        const checkmark = createCheckmarkElement();
         taskEntry.dataset.id = task.id;
         taskEntry.style = "margin: 2rem;";
         taskEntry.classList.add("task-entry");
-        taskEntry.appendChild(createCheckmarkElement());
+        swapCheckmarkDisplay(checkmark, task.checked);
+        taskEntry.appendChild(checkmark);
         taskInfoDiv.style = "display: grid; grid-template-columns: auto 6rem 5rem; grid-template-rows: 3rem auto auto; align-items: center;";
         // add other fields of task
         const makeField = (type, className, style, text)=>{
@@ -80,6 +82,21 @@ const view = (()=>{
         return taskEntry;
     }
 
+    const getTaskEntry = id => {
+        for (const node of taskEntryListElement.children) {
+            if (node.dataset.id == id) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    // handles changing the checkmark display
+    const swapCheckmarkDisplay = (checkmarkDiv, isChecked) => {
+        domManager.setVisible(checkmarkDiv.children[0], !isChecked);
+        domManager.setVisible(checkmarkDiv.children[1], isChecked);
+    }
+
 
     // public methods
     const querySelected = (selectors) => {
@@ -97,20 +114,20 @@ const view = (()=>{
         tagElement.addEventListener("click", clickHandler);
     };
 
-    const addNewTask = (task,clickHandler) => {
+    const addNewTask = (task, clickHandler, checkHandler) => {
         const taskElement = createTaskEntry(task);
         taskEntryListElement.appendChild(taskElement);
-        taskElement.addEventListener("click", clickHandler);
+        taskElement.childNodes[0].addEventListener("click", checkHandler);
+        taskElement.childNodes[1].addEventListener("click", clickHandler);
     }
 
     const removeTask = (id) => {
-        for (const node of taskEntryListElement.children) {
-            if (node.dataset.id == id) {
-                node.remove();
-                return;
-            }
+        const node = getTaskEntry(id)
+        if (!node) {
+            console.warn("Couldn't find node with matching id");
+            return;
         }
-        console.log("Couldn't find node with matching id");
+        node.remove();
     }
 
     const generateSideMenuTags = (tags, handlerOfClickHandler) => {
@@ -120,10 +137,10 @@ const view = (()=>{
         });
     }
 
-    const generateHomeView = (tasks, handlerOfClickHandler) =>  {
+    const generateHomeView = (tasks, handlerOfClickHandler, handlerOfCheckHandler) =>  {
         taskEntryListElement.replaceChildren();
         tasks.forEach(task => {
-            addNewTask(task, handlerOfClickHandler(task));
+            addNewTask(task, handlerOfClickHandler(task), handlerOfCheckHandler(task));
         });
     }
 
@@ -158,8 +175,7 @@ const view = (()=>{
             taskModalElements[field].textContent = task[field];
         }
         // set check icon
-        domManager.setVisible(taskModalElements.checked.children[0], !task.checked);
-        domManager.setVisible(taskModalElements.checked.children[1], task.checked);
+        swapCheckmarkDisplay(taskModalElements.checked, task.checked);
         // set tags
         task.tags.forEach(tag => {
             taskModalElements.tags.appendChild(createTagEntry(tag));
@@ -188,6 +204,15 @@ const view = (()=>{
     }
 
     const extractIdOfCurrentTask = () => taskModalElements.modal.dataset.id;
+
+    const checkOffTask = (id, checked) => {
+        const node = getTaskEntry(id)
+        if (!node) {
+            console.warn("Couldn't find node with matching id");
+            return;
+        }
+        swapCheckmarkDisplay(node.childNodes[0], checked);
+    }
 
     const openTagModal = () => {
         domManager.setVisible(tagModalElement);
@@ -226,6 +251,7 @@ const view = (()=>{
         extractTag,
         extractIdOfCurrentTask,
         extractTaskFromCreation,
+        checkOffTask,
         loadTagsInTaskCreation,
         loadTaskInModal,
         toggleTaskListDropdown,

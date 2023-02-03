@@ -4,15 +4,20 @@ import view from "./view.js";
 
 // main
 const userData = model.loadUserData();
+
+// dynamic click events
 const tagEntryHandler = (tag) => (()=>{});
 const taskEntryHandler = (task)=>(()=>{buttonEvent.openTask(task)});
+const taskCheckHandler = (task)=>(()=>{
+    view.checkOffTask(task.id, model.toggleCheckOffTask(task.id));
+})
 
 view.generateSideMenuTags(userData.tags, tagEntryHandler);
-view.generateHomeView(userData.tasks, taskEntryHandler);
+view.generateHomeView(userData.tasks, taskEntryHandler, taskCheckHandler);
 
 const buttonEvent = {
     goToHome: ()=>{ 
-        view.generateHomeView(model.getDataCopy().tasks, taskEntryHandler);
+        view.generateHomeView(model.getDataCopy().tasks, taskEntryHandler, taskCheckHandler);
         console.log("Load home view.")
     },
     addTag: ()=>{
@@ -30,7 +35,7 @@ const buttonEvent = {
         Promise.resolve(model.resetData())
         .then( newData => {
             view.generateSideMenuTags(newData.tags, tagEntryHandler);
-            view.generateHomeView(newData.tasks, taskEntryHandler);
+            view.generateHomeView(newData.tasks, taskEntryHandler, taskCheckHandler);
         });
     },
     newTask: ()=>{
@@ -45,7 +50,7 @@ const buttonEvent = {
     },
     createTask: ()=>{
         const task = model.addNewTask(view.extractTaskFromCreation());
-        view.addNewTask(task, taskEntryHandler(task));
+        view.addNewTask(task, taskEntryHandler(task), taskCheckHandler(task));
         view.closeTaskCreation();
     },
     openTask: function(task) {
